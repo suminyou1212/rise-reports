@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>네이버 X 토스 RISE ETF 일일 댓글 현황 (2026.05.31)</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',sans-serif; background:linear-gradient(135deg,#F4F7F9 0%,#E8EEF3 100%); color:#2C3E50; padding:30px 20px; line-height:1.5; }
+.container { max-width:1200px; margin:0 auto; }
+
+/* 상단 히어로 */
+.hero { background:#FFE082; color:#1A2E45; padding:18px 22px; border-radius:14px; margin-bottom:10px; box-shadow:0 4px 20px rgba(0,0,0,0.08); display:flex; justify-content:space-between; align-items:center; gap:16px; }
+.hero-left { display:flex; flex-direction:column; gap:10px; min-width:0; }
+.hero-title { font-size:22px; font-weight:900; letter-spacing:-0.6px; color:#1A2E45; line-height:1.2; }
+.hero-meta { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.hero-date { font-size:14px; font-weight:700; color:#1A2E45; opacity:0.85; }
+.hero-dept { font-size:12px; font-weight:800; color:#1A2E45; background:#FFBC00; padding:4px 12px; border-radius:20px; letter-spacing:-0.3px; }
+.hero-stats { display:flex; flex-direction:column; gap:8px; flex-shrink:0; }
+.hero-stat { font-size:13px; font-weight:800; padding:6px 14px; border-radius:20px; color:#fff; white-space:nowrap; text-align:center; min-width:96px; }
+.hero-stat.naver { background:#03C75A; }
+.hero-stat.toss { background:#0064FF; }
+.total-line { text-align:right; font-size:13px; font-weight:700; color:#1A2E45; margin-bottom:14px; padding-right:4px; }
+
+/* 카드 그리드 */
+.card-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(320px,1fr)); gap:14px; margin-bottom:20px; }
+.card { background:#fff; border-radius:10px; overflow:hidden; border-top:5px solid #F9A825; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+.card-header { display:flex; align-items:center; padding:14px 16px; cursor:pointer; gap:10px; }
+.card-header:hover { background:#FAFAFA; }
+.tag { font-size:11px; font-weight:700; padding:2px 8px; border-radius:4px; flex-shrink:0; white-space:nowrap; }
+.tag-positive { background:#E8F5E9; color:#2E7D32; }
+.tag-negative { background:#FFEBEE; color:#C62828; }
+.tag-neutral { background:#F5F5F5; color:#757575; }
+.etf-name { flex:1; font-weight:600; font-size:14px; }
+.count { font-size:12px; color:#666; white-space:nowrap; }
+.arrow { font-size:10px; color:#999; transition:transform .2s; }
+.card.open .arrow { transform:rotate(180deg); }
+.card-summary { padding:0 16px 12px; font-size:13px; color:#555; }
+.card-detail { display:none; padding:0 16px 16px; border-top:1px solid #EEE; }
+.card.open .card-detail { display:block; }
+
+/* 댓글 */
+.comment { padding:10px 0; border-bottom:1px solid #F0F0F0; }
+.comment:last-child { border-bottom:none; }
+.comment-meta { display:flex; align-items:center; gap:8px; margin-bottom:4px; flex-wrap:wrap; }
+.badge { color:#fff; font-size:11px; padding:2px 7px; border-radius:4px; font-weight:500; }
+.author { font-size:12px; color:#333; font-weight:600; }
+.date { font-size:11px; color:#999; }
+.meta-stat { font-size:11px; color:#888; }
+.comment-title { font-size:13px; font-weight:700; color:#1A2E45; margin-bottom:2px; word-break:break-word; }
+.comment-body { font-size:13px; color:#444; word-break:break-word; }
+.more-note { text-align:center; padding:10px; font-size:12px; color:#999; }
+
+/* 하단 조용한 종목 */
+.silent-section { background:#fff; border-radius:10px; padding:16px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+.silent-header { cursor:pointer; font-size:14px; font-weight:600; color:#666; }
+.silent-header:hover { color:#333; }
+.silent-list { display:none; margin-top:12px; font-size:13px; color:#888; line-height:1.8; }
+.silent-section.open .silent-list { display:block; }
+
+/* 반응형 */
+@media (max-width:600px) {
+  body { padding:12px 8px; }
+  .hero { padding:14px 16px; gap:10px; }
+  .hero-title { font-size:16px; }
+  .hero-date { font-size:12px; }
+  .hero-dept { font-size:10px; padding:3px 9px; }
+  .hero-stat { font-size:11px; padding:5px 10px; min-width:78px; }
+  .total-line { font-size:11px; }
+  .card-grid { grid-template-columns:1fr; gap:10px; }
+  .card-header { padding:12px 14px; }
+  .etf-name { font-size:13px; }
+  .comment-body { font-size:12px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- 1) 히어로 -->
+  <div class="hero">
+    <div class="hero-left">
+      <div class="hero-title">RISE ETF 일일 댓글 현황</div>
+      <div class="hero-meta">
+        <span class="hero-date">2026.05.31 (일)</span>
+        <span class="hero-dept">디지털마케팅본부</span>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <span class="hero-stat naver">네이버 13건</span>
+      <span class="hero-stat toss">토스 38건</span>
+    </div>
+  </div>
+
+  <div class="total-line">총 4종목 51건</div>
+
+  <!-- 2) 댓글 있는 종목 카드 -->
+  <div class="card-grid">
+    
+        <div class="card">
+          <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="tag tag-neutral">중립</span>
+            <span class="etf-name">RISE 현대차고정피지컬AI</span>
+            <span class="count">46건</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="card-summary">기대와 함께 상승 전망과 조정 시 매수 의견 혼재</div>
+          <div class="card-detail">
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#03C75A">네이버</span>
+                <span class="author">이거뭐고</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 8</span> <span class="meta-stat">👁 747</span>
+              </div>
+              <div class="comment-title">월욜(내일) 상한가 나올 가능성</div>
+              <div class="comment-body">200%라고 봄 ㅎㅎ<br>못해도 20% 이상찍을 듯 ㅎㅎ</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#03C75A">네이버</span>
+                <span class="author">승자는혼자다</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 2</span> <span class="meta-stat">👁 520</span>
+              </div>
+              <div class="comment-title">형님들 고견 좀..</div>
+              <div class="comment-body">현대차 6년 장투중인데 포모 씨게 오네요.<br>같이 6년 장투했던 삼성전기도 정리했더니 5일만에 3억 넘게 더 올라가고.! 고작 5일 인데..물론 수익 봤지만<br>3-4억이 5일만에 갈리니..꼭 실패한 느낌..<br>아자아자~ 힘 내야죠<br>현차는 모비스,오토 발밑 겨우 기어가고..<br>햐..쨌든 암만봐도 현재 살만한건 로봇밖에 없단 판단인데요. 낼부터 모비스,에버도 품고 있는 라현피 분할로<br>2억정도 생각하고 있습니다. 12일부터 들어갔으면 좋았는데..그동안 현차에 너무 고생해서..<br>바보같지만 로봇.. 이제 모아갈 시기 맞죠,? 현차는 발암이라 여러가지 담는 라현피가 딱이다 싶네요.<br>조언 좀 해주세요. 막말 마시구요. ㅠ<br>질문이요. 상장etf말고 irp에서 매달 투자도 병행하고픈데 하나은행인데 etf에서 검색하면 안나오더라구요<br>채권형이 아니어서 irp서는 판매 못하는거지요?<br>댓에서 연금을 투자하신다해서 질문드려요</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#03C75A">네이버</span>
+                <span class="author">풍부한주식지표서포터</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 1</span> <span class="meta-stat">👁 522</span>
+              </div>
+              <div class="comment-title">트럼프</div>
+              <div class="comment-body">협상 거부 했는데 월욜 행방은?</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#03C75A">네이버</span>
+                <span class="author">공정한고점매도도롱뇽</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 13</span> <span class="meta-stat">👁 418</span>
+              </div>
+              <div class="comment-title">이거 진짜 현대차보다 더 폭발할 좋은물건임</div>
+              <div class="comment-body">로봇으로 주도 섹터되면 얘가 진짜 요물임<br>진짜 좋은 종목임<br>떨굴때는 열심히 싸게 줍줍하면 돼궁</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#03C75A">네이버</span>
+                <span class="author">잠시쉬었다가자</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 13</span> <span class="meta-stat">👁 127</span>
+              </div>
+              <div class="comment-title">일단 6월 중</div>
+              <div class="comment-body">3만원은 갈 듯</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#03C75A">네이버</span>
+                <span class="author">빚투청산기원원정대</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 10</span> <span class="meta-stat">👁 141</span>
+              </div>
+              <div class="comment-title">아틀라스양산 본격화되면</div>
+              <div class="comment-body">숫자고 나발이고간에 목표주가가 무의미해진다<br>언젠가 양산하겄지 그냥 박아놓고존버</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#03C75A">네이버</span>
+                <span class="author">이거뭐고</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 3</span> <span class="meta-stat">👁 166</span>
+              </div>
+              <div class="comment-title">6/1(월) 분명 상한가(+30%) 또는 20%이상 종가 예상</div>
+              <div class="comment-body">분명 저는 말했습니다.<br>장초 10~15%이상 갭뜹니다.<br>(힌트 줬습니다.)<br>딴 말 하지 마세요..ㅎㅎ</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#03C75A">네이버</span>
+                <span class="author">니샴프향이느껴진거야</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 9</span> <span class="meta-stat">👁 111</span>
+              </div>
+              <div class="comment-title">감도 안옴</div>
+              <div class="comment-body">얼마나 오를지</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#03C75A">네이버</span>
+                <span class="author">이거뭐고</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 2</span> <span class="meta-stat">👁 136</span>
+              </div>
+              <div class="comment-title">정의선 회장이 황씨 아재와 찐깐부 ㅎㅎ</div>
+              <div class="comment-body">내일은 뭐다!?<br>쩜상이다.<br>https://n.news.naver.com/article/011/0004626243?cds=news_edit</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#03C75A">네이버</span>
+                <span class="author">근면한추리실력자</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 6</span> <span class="meta-stat">👁 77</span>
+              </div>
+              <div class="comment-title">올해 10만원가자!</div>
+              <div class="comment-body">반도체와 피지컬AI의 훈풍을 등에 업고 10만가자</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#03C75A">네이버</span>
+                <span class="author">정수리에서사고발바닥에서판다</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 3</span> <span class="meta-stat">👁 71</span>
+              </div>
+              <div class="comment-title">휴림로봇은 시기상조</div>
+              <div class="comment-body">휴림로봇 빼고 LG전자 넣어주십쇼</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">부드러운새우123</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 15</span>
+              </div>
+              <div class="comment-title">저점 판독기 등장</div>
+              <div class="comment-body">로보틱스를 3번째 붐 섹터로 보고 있음<br><br>크게는 AI 반도체 -&gt; 우주 -&gt; 로봇<br><br>+ AI 반도체 (솔탑투)<br>+ 우주 (타이거 우주ETF)<br>+ 로봇 (현고피)<br><br>주린이 or 호황 분위기 속 운용 안정성을 고려하면 위 종목으로 나눠서 투자하는게 가장 안정적인 우상향 그리기 좋다고 봄</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">무잔집들이</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 9</span>
+              </div>
+              <div class="comment-title">그냥 6월은 여기에 박아넣고 구경만 해야겠다.</div>
+              <div class="comment-body">눌림 조금 나와서 14000원에 산다고 가정했을 때<br>모든 계좌 현금 다 끌어모으면 3,500주 정도<br><br>현차 현비스 현토에버 정신없이<br>왔다갔다 할 바에 그냥 여기서 6월 한 달 스윙해야겠네<br><br>SOL 자동차TOP3+<br>이 친구도 좋긴 한데 여기가 순수 현둥이들 비중이 더 높은게 끌리고, 삼전기가 조정받으면 솔차탑3 발목 잡을까봐 두려움<br><br>- - -<br><br>현차 - 25.0%<br>현비스 - 16.9%<br>현토에버 - 8.2%<br><br>LG 이노텍 - 14.1%<br>LG CNS - 4.5%<br><br>두산로보틱스 - 3.1%<br>에스엘 - 1.9%<br><br>이정도면 만족스러운 구성.<br><br>다만, 제발 기아 비중이랑 레인보우 비중 누르고<br>현둥이들 비중 늘려줬으면.<br><br>- - -<br><br>1차 목표가 2만원<br>2차 목표가 3만원.</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">신선한라쿤267</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 7</span>
+              </div>
+              <div class="comment-title">반문의 여지가 없다</div>
+              <div class="comment-body">다음주 상승<br><br>그냥 편하게 봐야지</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">모에루1234</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 7</span>
+              </div>
+              <div class="comment-title">ETF에 피지컬AI 박힌 건 이거 밖에 없다</div>
+              <div class="comment-body">다음주 날아간다</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">리치굿</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 5</span>
+              </div>
+              
+              <div class="comment-body">월요일에 5백<br>조정 시마다 총 2천 투입</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">삼닉믿어용</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 5</span>
+              </div>
+              
+              <div class="comment-body">이거 너무 좋은데???? 월요일 보고 진입!</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">이루이보스</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 4</span>
+              </div>
+              
+              <div class="comment-body">솔top2랑 같이 가지기엔 둘중에 뭐가 좋을까요</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">담백한캥거루217</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 4</span>
+              </div>
+              
+              <div class="comment-body">너 괜찮아보인다 늦게 발견해서 미안해 <br>14000 함 올래?</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">용감한물소182</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 4</span>
+              </div>
+              
+              <div class="comment-body">구성품목 좋네요 솔탑이랑 이노텍 겹치는게 좀 아쉽기는 한데 얘가 그나마 겹치는 종목이 젤 적어보이네요 마침 현대차도 가져가고 싶었는데 <br>얘도 좀 모아봐야겠어요 ㅋㅋ</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">포근한새우222</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 3</span>
+              </div>
+              <div class="comment-title">추매 예약완료</div>
+              <div class="comment-body">월욜 장열리면 522주 추매간드아</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">시드를모으자</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 3</span>
+              </div>
+              
+              <div class="comment-body">Lg전자가없넹?</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">고먐미주주</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 3</span>
+              </div>
+              
+              <div class="comment-body">아 추매 어케하지 ㅋㅋㅋㅋ 사자마자 15프로 올라버려서</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">대황삼성</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 3</span>
+              </div>
+              
+              <div class="comment-body">장 열어라 너 바로2500장 박아주께</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">MR하루하나</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 2</span>
+              </div>
+              <div class="comment-title">부분익절하고 나갑니다.</div>
+              <div class="comment-body">조정나오면 그때 추매하는걸로ㅋㅋ<br>현대차70만원 초반까지 조정나오길 기대합니다.</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">JEPQQ</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 2</span>
+              </div>
+              
+              <div class="comment-body">Sol top2 주주인데 여기 맛나보이네요?</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">indamin</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 2</span>
+              </div>
+              <div class="comment-title">아</div>
+              <div class="comment-body">100주만산 내자신이 밉지만 그냥 두배될때 까지 냅둬야겟다 물도 불도 안탐 ㅋ</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">사랑스러운양25</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 2</span>
+              </div>
+              
+              <div class="comment-body">현대차그룹플러스 들가있는데 얘가좋네 일로 옮겨야것다 ㅎ</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">파이어원해요</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 2</span>
+              </div>
+              <div class="comment-title">괴리율</div>
+              <div class="comment-body">좀 낮아지면 들어갈까요?</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">부적절닉네임</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 2</span>
+              </div>
+              
+              <div class="comment-body">솔탑이랑 이거 반반 들고 장투 가본다</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">순수한벌222</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 2</span>
+              </div>
+              <div class="comment-title">13800</div>
+              <div class="comment-body">조정이 올거라 믿고 걸어놓긴 했는데 너무 낮게 걸어났나요? 제가 주식장 시간때는 핸드폰을 볼 수 없는 상태라서요</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">친근한토끼248</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 2</span>
+              </div>
+              <div class="comment-title">월요일에...</div>
+              <div class="comment-body">주린이입니다 ㅜㅜ<br>짐입하고 싶은데 월요일 장시작하자 사는게 나을지<br>10시이후가 나을지 고수님들 고견부탁드립니다~</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">친근한카멜레온138</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">월요일 들어가야겠네요<br>기아빼고 lg전자 넣으면 딱이겠네요</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">게게게로츄</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">나스닥 솔탑투 그리고 이거 내일 신규 진입 3 3 3 비율로 적립 장투 가겠습니다</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">내가아는것만사기</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">종목비중궁금하네</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">조용한물개237</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">내일 사도 괜찮을까요?</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">힘내자영차영차</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">나는 lg씨엔에스랑 반반 들어간다</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">올라줄수있겠니</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">형님들 19살인데 ㄷㅂ으로 500만들고 왔는데 여기에 다 박으면 되나요</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">혹시몰라서해봤어</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">이거 사고싶어요..</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">활기찬침팬지5</span>
+                <span class="date">2026.05.31</span>
+              </div>
+              
+              <div class="comment-body">내일 장 기대된다 <br>떨어지면 추매~~</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">저점매수주린이</span>
+                <span class="date">2026.05.31</span>
+              </div>
+              
+              <div class="comment-body">551주 있으니 <br>1000주 만들기 목표!</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">친근한다람쥐433</span>
+                <span class="date">2026.05.31</span>
+              </div>
+              
+              <div class="comment-body">다음 주 추가 매수</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">충실한돌고래194</span>
+                <span class="date">2026.05.31</span>
+              </div>
+              
+              <div class="comment-body">이거 종목 맛도리인거봐라ㅋㅋ</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">개미0001</span>
+                <span class="date">2026.05.31</span>
+              </div>
+              
+              <div class="comment-body">금요일에 올랐어도 아직 매력적이네~</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">성실한바다표범123456</span>
+                <span class="date">2026.05.31</span>
+              </div>
+              
+              <div class="comment-body">아으월요일이기다려지노</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">활발한말142</span>
+                <span class="date">2026.05.31</span>
+              </div>
+              
+              <div class="comment-body">진입하려고 하는데 언제쯤이 좋을까요? 낼 장 열리자마자 매수해야할까요..? 추천 해주세용..</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="tag tag-neutral">중립</span>
+            <span class="etf-name">RISE 삼성전자단일종목레버리지</span>
+            <span class="count">3건</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="card-summary">기대 상승에 대한 긍정적 관심과 신중한 투자 의견 혼재</div>
+          <div class="card-detail">
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">휘리릭123</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 2</span>
+              </div>
+              <div class="comment-title">음의복리 걱정할 필요가있나</div>
+              <div class="comment-body">오르락 내리락 하면 문제지만 쭈욱 우상향이 예상되는데뭔 음복리</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#03C75A">네이버</span>
+                <span class="author">워레뷰페</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">👁 7</span>
+              </div>
+              <div class="comment-title">3억 질렀다 제발~~</div>
+              <div class="comment-body">딱 10프로만 먹자</div>
+            </div>
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">송도의현인</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              <div class="comment-title">진격의 삼전</div>
+              <div class="comment-body">아직 배가 고프네요.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="tag tag-positive">긍정</span>
+            <span class="etf-name">RISE 미국AI밸류체인데일리고정커버드콜</span>
+            <span class="count">1건</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="card-summary">긍정적인 상승 기대 댓글 다수</div>
+          <div class="card-detail">
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#03C75A">네이버</span>
+                <span class="author">rive00</span>
+                <span class="date">2026.05.31</span> <span class="meta-stat">❤️ 1</span> <span class="meta-stat">👁 17</span>
+              </div>
+              <div class="comment-title">내일도</div>
+              <div class="comment-body">2%상승 기원</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="tag tag-positive">긍정</span>
+            <span class="etf-name">RISE 200위클리커버드콜</span>
+            <span class="count">1건</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="card-summary">투자자들은 배당 수익을 통한 반복 매매에 긍정적 반응 보여</div>
+          <div class="card-detail">
+            <div class="comment">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">야생의주리니</span>
+                <span class="date">2026.05.31</span>
+              </div>
+              
+              <div class="comment-body">배당락 전에 샀다가 배당받고 팔고 반복하면 부자되겠네요?!</div>
+            </div>
+          </div>
+        </div>
+  </div>
+
+  <!-- 3) 조용했던 종목 -->
+  <div class="silent-section" onclick="this.classList.toggle('open')">
+    <div class="silent-header">📌 어제 조용했던 종목 136개 (펼치기)</div>
+    <div class="silent-list">RISE 삼성전자SK하이닉스채권혼합50, RISE 네트워크인프라, RISE 200, RISE 메타버스, RISE 코리아밸류업, RISE AI전력인프라, RISE ESG사회책임투자, RISE SK하이닉스단일종목레버리지, RISE AI&로봇, RISE 대형고배당10TR, RISE 머니마켓액티브, RISE 미국테크100데일리고정커버드콜, RISE 200TR, RISE 비메모리반도체액티브, RISE 코리아전략산업액티브, RISE AI반도체TOP10, RISE 코스닥150, RISE KIS국고채30년Enhanced, RISE 바이오TOP10액티브, RISE 미국나스닥100, RISE 코리아밸류업위클리고정커버드콜, RISE 삼성그룹Top3채권혼합, RISE 2차전지TOP10, RISE 미국S&P500, RISE 2차전지액티브, RISE 수소경제테마, RISE 미국30년국채엔화노출(합성 H), RISE 글로벌자산배분액티브, RISE 글로벌원자력, RISE TDF2050액티브 적격, RISE IT플러스, RISE 2차전지TOP10인버스(합성), RISE 미국AI전력인프라액티브, RISE 미국반도체NYSE(H), RISE 미국배당100데일리고정커버드콜, RISE 미국반도체NYSE, RISE 고배당, RISE 코리아금융고배당, RISE 200선물레버리지, RISE 5대그룹주, RISE 미국휴머노이드로봇, RISE 미국AI밸류체인TOP3Plus, RISE 차이나AI반도체TOP4Plus, RISE K엔터&여행레저, RISE 국고채3년, RISE 코스닥150선물레버리지, RISE 미국AI클라우드인프라, RISE 단기국공채액티브, RISE 미국양자컴퓨팅, RISE 버크셔포트폴리오TOP10, RISE 테슬라고정테크100, RISE 팔란티어고정테크100, RISE 글로벌테크놀로지(합성 H), RISE 테슬라애플아마존채권혼합, RISE 200채권혼합50, RISE 코스피, RISE 미국S&P500(H), RISE 주식혼합, RISE 미국30년국채액티브, RISE KOFR금리액티브(합성), RISE 미국AI테크액티브, RISE 헬스케어채권혼합, RISE 글로벌수소경제, RISE V&S셀렉트밸류채권혼합, RISE 단기채권알파액티브, RISE CD금리액티브(합성), RISE 미국S&P원유생산기업(합성 H), RISE 미국30년국채커버드콜(합성), RISE 미국S&P500데일리고정커버드콜, RISE 차이나테크TOP10위클리타겟커버드콜, RISE 테슬라미국채타겟커버드콜혼합(합성), RISE 26-11 회사채(AA-이상)액티브, RISE 종합채권(A-이상)액티브, RISE 단기통안채, RISE 미국단기투자등급회사채액티브, RISE 동학개미, RISE TDF2040액티브 적격, RISE 200금융, RISE TDF2030액티브 적격, RISE 글로벌주식분산액티브, RISE 미국은행TOP10, RISE 중국본토대형주CSI100, RISE 배터리 리사이클링, RISE 게임테마, RISE 유로스탁스50(H), RISE 미국고배당다우존스TOP10, RISE 미국달러SOFR금리액티브(합성), RISE 미국고정배당우선증권, RISE 글로벌클린에너지, RISE AI플랫폼, RISE 글로벌리얼티인컴, RISE 수출주, RISE 국고채10년액티브, RISE KRX300, RISE 엔비디아고정테크100, RISE 헬스케어, RISE 글로벌농업경제, RISE 글로벌비만산업TOP2+, RISE 200선물인버스2X, RISE 차이나HSCEI(H), RISE 내수주플러스, RISE 미국S&P배당킹, RISE 글로벌게임테크TOP3Plus, RISE 200고배당커버드콜ATM, RISE 미국천연가스밸류체인, RISE 중국본토CSI300, RISE 글로벌데이터센터리츠(합성), RISE 차이나항셍테크, RISE 중소형고배당, RISE 중기우량회사채, RISE 팔라듐선물(H), RISE 중국MSCI China(H), RISE 우량업종대표주, RISE 단기특수은행채액티브, RISE 미국장기국채선물레버리지(합성 H), RISE 국채30년레버리지(합성), RISE 200선물인버스, RISE 코스닥150선물인버스, RISE 미국반도체인버스(합성 H), RISE 일본섹터TOP4Plus, RISE V&S셀렉트밸류, RISE KQ고배당, RISE 미국장기국채선물(H), RISE 인도디지털성장, RISE 미국장기국채선물인버스(H), RISE 미국달러선물인버스, RISE 중장기국공채액티브, RISE 미국S&P500엔화노출(합성 H), RISE 팔라듐선물인버스(H), RISE 금융채액티브, RISE 차이나H선물인버스(H), RISE 국채선물3년, RISE 국채선물10년인버스, RISE 국고채3년선물인버스, RISE 국채선물10년, RISE 국채선물5년추종</div>
+  </div>
+
+</div>
+</body>
+</html>
