@@ -51,12 +51,13 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
 .comment-body { font-size:13px; color:#444; word-break:break-word; }
 .more-note { text-align:center; padding:10px; font-size:12px; color:#999; }
 
-/* 하단 조용한 종목 */
-.silent-section { background:#fff; border-radius:10px; padding:16px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
-.silent-header { cursor:pointer; font-size:14px; font-weight:600; color:#666; }
-.silent-header:hover { color:#333; }
-.silent-list { display:none; margin-top:12px; font-size:13px; color:#888; line-height:1.8; }
-.silent-section.open .silent-list { display:block; }
+/* 검색바 */
+.search-bar { margin-bottom:14px; position:relative; }
+.search-input { width:100%; padding:12px 44px 12px 16px; border:2px solid #E0E6EB; border-radius:10px; font-size:14px; font-family:inherit; background:#fff; outline:none; transition:border-color .15s; -webkit-appearance:none; }
+.search-input:focus { border-color:#3F51B5; }
+.search-icon { position:absolute; right:16px; top:50%; transform:translateY(-50%); font-size:16px; color:#999; pointer-events:none; }
+mark { background:#FFF59D; color:inherit; padding:0 2px; border-radius:3px; font-weight:700; }
+.no-results { text-align:center; padding:40px 20px; color:#999; font-size:14px; background:#fff; border-radius:10px; }
 
 /* 반응형 */
 @media (max-width:600px) {
@@ -67,6 +68,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
   .hero-dept { font-size:10px; padding:3px 9px; }
   .hero-stat { font-size:11px; padding:5px 10px; min-width:78px; }
   .total-line { font-size:11px; }
+  .search-input { padding:10px 38px 10px 14px; font-size:13px; }
   .card-grid { grid-template-columns:1fr; gap:10px; }
   .card-header { padding:12px 14px; }
   .etf-name { font-size:13px; }
@@ -92,10 +94,16 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
     </div>
   </div>
 
-  <div class="total-line">총 25종목 168건</div>
+  <div class="total-line" id="total-line">총 25종목 168건</div>
 
-  <!-- 2) 댓글 있는 종목 카드 -->
-  <div class="card-grid">
+  <!-- 2) 검색바 -->
+  <div class="search-bar">
+    <input type="search" id="search-input" class="search-input" placeholder="댓글 제목·본문 검색 (예: 배당, 수익률, 전망…)" autocomplete="off">
+    <span class="search-icon">🔍</span>
+  </div>
+
+  <!-- 3) 댓글 있는 종목 카드 -->
+  <div class="card-grid" id="card-grid">
     
         <div class="card">
           <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
@@ -106,7 +114,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
           </div>
           <div class="card-summary">혼란스러운 가격 변동 속에서도 일부 투자자는 장기적 상승을 기대하며 매수 지속</div>
           <div class="card-detail">
-            <div class="comment">
+            <div class="comment" data-search="다 빼신건가요? 여긴 왜 조용하죠">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">온화한상승파동챔피언</span>
@@ -115,7 +123,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">다 빼신건가요?</div>
               <div class="comment-body">여긴 왜 조용하죠</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="이제 그만 수직 낙하하니 저렴한 구간이라 생각해서 모으다 보니 12500주가 되어 버렸네요. ㅜ.ㅜ 3만원까지 기다려볼렵니다">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">하련솔</span>
@@ -124,7 +132,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">이제 그만</div>
               <div class="comment-body">수직 낙하하니 저렴한 구간이라 생각해서 모으다 보니 12500주가 되어 버렸네요. ㅜ.ㅜ 3만원까지 기다려볼렵니다</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="빼면 쏠꺼같고 안빼자니 계단식 하락 일거같고 참 이거 시04949바 오지게 물렸네..">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">멘탈좋은익절대부</span>
@@ -133,7 +141,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">빼면 쏠꺼같고 안빼자니 계단식 하락 일거같고</div>
               <div class="comment-body">참 이거 시04949바<br>오지게 물렸네..</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="앜  현실부정중~~~~~ 거짓말이라고 해죠요~~~">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">히잌설마</span>
@@ -142,7 +150,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">앜  현실부정중~~~~~</div>
               <div class="comment-body">거짓말이라고 해죠요~~~</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="이거 만원정도에 시작했떤건가여? 더 담아야겠네 언젠간 가겠찌;">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">주주릴린</span>
@@ -151,7 +159,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">이거 만원정도에 시작했떤건가여?</div>
               <div class="comment-body">더 담아야겠네 언젠간 가겠찌;</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="RISE현대차고정피지컬AI는 무조건 잘될것이란 믿음으로 계속 긁어모으는 중입니다. 웅장하구나">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">낭만이어라</span>
@@ -160,7 +168,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">RISE현대차고정피지컬AI는</div>
               <div class="comment-body">무조건 잘될것이란 믿음으로 계속 긁어모으는 중입니다. 웅장하구나</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="기관것들은 산것두 없는데 ! 어케 매일매일 매도치냐 ??">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">Lee121266</span>
@@ -169,7 +177,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">기관것들은 산것두 없는데 !</div>
               <div class="comment-body">어케 매일매일 매도치냐 ??</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="왜 거래정지예여? 궁금합니다 다 멈췄ㄸ네 브레이끼 걸린거?">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">주주릴린</span>
@@ -178,7 +186,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">왜 거래정지예여?</div>
               <div class="comment-body">궁금합니다 다 멈췄ㄸ네 브레이끼 걸린거?</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="현대차피지컬에이아이 긴급 야이사람들아 기관 상장후 하루도 안빠지고 줄매도 하는데 이거사는사람들은 뇌가 있는겨 없는겨 ㅠㅠ">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">종가배팅전문</span>
@@ -187,7 +195,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">현대차피지컬에이아이 긴급</div>
               <div class="comment-body">야이사람들아 기관 상장후<br>하루도 안빠지고 줄매도 하는데<br>이거사는사람들은 뇌가 있는겨 없는겨 ㅠㅠ</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="와 진짜 폭탄 세일이네 ㄷ ㄷ ㄷ 앞으로 피지컬 AI 시대인데 오늘 줍줍 개 꿀 감사요 ㅋㅋㅋ 감사합니다 ㅋㅋㅋㅋ">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">TenBaggerHunter</span>
@@ -196,7 +204,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">와 진짜 폭탄 세일이네 ㄷ ㄷ ㄷ 앞으로 피지컬 AI 시대인데 오늘 줍줍 개 꿀 감사요 ㅋㅋㅋ</div>
               <div class="comment-body">감사합니다 ㅋㅋㅋㅋ</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="이번주 월드컵시작! 아틀라스가 웃고있다...... 갈분들 가세요..">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">낭만이어라</span>
@@ -205,7 +213,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">이번주 월드컵시작!</div>
               <div class="comment-body">아틀라스가 웃고있다......<br>갈분들 가세요..</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="RISE 현대차고정피지컬AI 말올! 말올!! 영차!영차!">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">매타알려줘</span>
@@ -214,7 +222,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">RISE 현대차고정피지컬AI</div>
               <div class="comment-body">말올! 말올!! 영차!영차!</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="12390원에 입성했어요~ 단일가에 입성했는데 만원밑으로 내려가면 추매하려고요~모두 성투하세요^^">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">퍼플병아리</span>
@@ -223,7 +231,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">12390원에 입성했어요~</div>
               <div class="comment-body">단일가에 입성했는데 만원밑으로 내려가면 추매하려고요~모두 성투하세요^^</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="담으려고 봣더니 언제 정지 풀리냥냥냥">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">날쌘주식소식수집가</span>
@@ -232,7 +240,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">담으려고 봣더니</div>
               <div class="comment-body">언제 정지 풀리냥냥냥</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="얘는 진짜 뭘까? 시원하게 올라가는걸 못봤네">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">이프로밥잣삽숴</span>
@@ -241,7 +249,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">얘는 진짜 뭘까?</div>
               <div class="comment-body">시원하게 올라가는걸 못봤네</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="폭탄세일 머니구하기가 하늘만처다">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">홈페이지123</span>
@@ -250,7 +258,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">폭탄세일</div>
               <div class="comment-body">머니구하기가<br>하늘만처다</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="현차가즈아">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">이렁머스크</span>
@@ -259,7 +267,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">현차가즈아</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="바겐세일 그만하고 이제 좀 오르지 매일매일이 바겐세일이면 어떡하지?? 사고나서 빨간색을 본적이 없네 하...">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">매수만하면꼬라박네</span>
@@ -268,7 +276,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">바겐세일 그만하고 이제 좀 오르지</div>
               <div class="comment-body">매일매일이 바겐세일이면 어떡하지??<br>사고나서 빨간색을 본적이 없네<br>하...</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="15층에 사람있어요">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">강복자</span>
@@ -277,7 +285,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">15층에 사람있어요</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="지금 사시는분 넘 부럽네요🥹">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">매력적인주치원생</span>
@@ -286,7 +294,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">지금 사시는분 넘 부럽네요🥹</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="내 안에 작은 아이가 속삭였다 추 미 애">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">엄마정말미안해</span>
@@ -295,7 +303,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">내 안에 작은 아이가 속삭였다</div>
               <div class="comment-body">추 미 애</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="야선 폭발중 낼 숏친 넘 다 좋대써">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">sleeping</span>
@@ -304,7 +312,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">야선 폭발중</div>
               <div class="comment-body">낼 숏친 넘 다 좋대써</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="로봇은 지금부터 시작이다. 추매 시작. 반박 시 저지먼트 데이에 집 앞으로 T-1000 찾아옴">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">엔비디아연변거지</span>
@@ -313,7 +321,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">로봇은 지금부터 시작이다.</div>
               <div class="comment-body">추매 시작. 반박 시 저지먼트 데이에 집 앞으로 T-1000 찾아옴</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="평단 13125도 잘샀다고 생각했는데 물 탈 돈 없어서 강제 존버다... 아까비">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">갸루귀신</span>
@@ -322,7 +330,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">평단 13125도 잘샀다고 생각했는데</div>
               <div class="comment-body">물 탈 돈 없어서 강제 존버다... 아까비</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="1800주다…….떨어지면 또산다 ㅡㅡ^">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">김수지니야</span>
@@ -331,7 +339,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">1800주다…….떨어지면 또산다 ㅡㅡ^</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="세일한다 모으자  기회이다">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">개뼉다귀</span>
@@ -340,7 +348,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">세일한다<br>모으자  기회이다</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="이런 가격에도 안살거면 대체 언제사려고 그러지?ㅎㅎ">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">Ghosting</span>
@@ -349,7 +357,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">이런 가격에도 안살거면 대체 언제사려고 그러지?ㅎㅎ</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="가자 3만원을 향해!">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">쬰냐미</span>
@@ -358,7 +366,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">가자 3만원을 향해!</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="추매 가자 파란불 들어올때마다 50주씩">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">왜저럴까요</span>
@@ -367,7 +375,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">추매 가자</div>
               <div class="comment-body">파란불 들어올때마다 50주씩</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="이걸 말아올리고 있어? 주식이 아니라 거의 코인판이네">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">쿵푸팽더</span>
@@ -376,7 +384,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">이걸 말아올리고 있어?</div>
               <div class="comment-body">주식이 아니라 거의 코인판이네</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="아 그냥 여기다 돈 박아놓고 연말에 봐야겟다;">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">욕심없이익절</span>
@@ -385,7 +393,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">아 그냥 여기다 돈 박아놓고 연말에 봐야겟다;</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="어이 황사장 로봇이랑 바둑 한 판만 둬줘">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">눈먼돈프로젝트</span>
@@ -394,7 +402,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">어이</div>
               <div class="comment-body">황사장 로봇이랑 바둑 한 판만 둬줘</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="이거 주식 이미지 트렌스포머로 바꿔주세요">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">사면떨구고팔면오르네</span>
@@ -403,7 +411,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">이거 주식 이미지 트렌스포머로 바꿔주세요</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="평단 1.56인데 분할매수의 중요성 뼈저리게 알아갑니다 ㅠ 월급 들어오면 물 줘야지 ㅠ">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">유우토</span>
@@ -412,7 +420,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">평단 1.56인데<br>분할매수의 중요성 뼈저리게 알아갑니다 ㅠ<br>월급 들어오면 물 줘야지 ㅠ</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="나 15층이다 올라와라 제발좀">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">돈미새대학생</span>
@@ -421,7 +429,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">나 15층이다 올라와라 제발좀</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="서킷때문에 10주밖에못주워서 억울해">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">두루미와</span>
@@ -430,7 +438,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">서킷때문에</div>
               <div class="comment-body">10주밖에못주워서 억울해</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="모듀들 평단어떠신가요 저는 13300">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">indamin</span>
@@ -439,7 +447,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">모듀들 평단어떠신가요<br>저는 13300</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="입주했습니다 기계공학부라 피지컬AI 사랑합니다">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">1달풍</span>
@@ -448,7 +456,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">입주했습니다</div>
               <div class="comment-body">기계공학부라 피지컬AI 사랑합니다</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="할인할때 사세요 이거 평단 만원대까지 간거 버티다 16층까지 갔다왔어요 다시 갑니다">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">빅맥런치세트</span>
@@ -457,7 +465,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">할인할때 사세요</div>
               <div class="comment-body">이거 평단 만원대까지 간거 버티다 16층까지 갔다왔어요 다시 갑니다</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="추매 때렸읍니다. ! 출레따 아우마다 렛츠고!">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">가전은엘지다</span>
@@ -466,7 +474,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">추매 때렸읍니다. ! 출레따 아우마다 렛츠고!</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="물이나 타야지">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">주식헤롱이</span>
@@ -475,7 +483,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">물이나 타야지</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="평단 15000원인데요 물타기해서 평단 14000원정도로 내리는게좋을까요? 아니면 다 빼고 지금 가격에 다시 넣는게 나을까요?">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">콘치즈불닭</span>
@@ -484,7 +492,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">평단 15000원인데요<br>물타기해서 평단 14000원정도로 내리는게좋을까요?<br>아니면 다 빼고 지금 가격에 다시 넣는게 나을까요?</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="RISE 현대차고정피지컬AI 200주 1주당 11,990원 · 6월 8일 09:02">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">산적이다냥</span>
@@ -493,7 +501,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">RISE 현대차고정피지컬AI 200주 1주당 11,990원 · 6월 8일 09:02</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="15층언제옴?...........ㅜ">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">물한이</span>
@@ -502,7 +510,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">15층언제옴?...........ㅜ</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="완전 개박살나네 ㅋㅋ 월급이 하루남아서 물탈돈이 없는게 아쉽다">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">미국이주도하는경제질서</span>
@@ -511,7 +519,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">완전 개박살나네 ㅋㅋ 월급이 하루남아서 물탈돈이 없는게 아쉽다</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="아  아까 물탈껄 타이밍 놓쳣네">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">현대차로벼락거지되기</span>
@@ -520,7 +528,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">아  아까 물탈껄 타이밍 놓쳣네</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="수요일에 월급 들어오면 물 부어줄게………..">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">르르랴</span>
@@ -529,7 +537,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">수요일에 월급 들어오면 물 부어줄게………..</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="소액이지만 쬐금식 담습니다 소액이지만 쬐금식 담습니다 | RISE 현대차고정피지컬AI 10주 1주당 12,185원 · 6월 8일 10:55">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">귀여운게딱좋아</span>
@@ -538,7 +546,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">소액이지만 쬐금식 담습니다 | RISE 현대차고정피지컬AI 10주 1주당 12,185원 · 6월 8일 10:55</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="일단130주삿고 이젠 50주씩 분할로살거임 일단130주삿고 이젠 50주씩 분할로살거임 ㅇㅇ">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">고독한주식이</span>
@@ -547,7 +555,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">일단130주삿고 이젠 50주씩 분할로살거임 ㅇㅇ</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="낼 달러 원화로 바꿔서 추매하려는데 달러는 그냥 가지고 있을까요??">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">수수달달칙칙</span>
@@ -556,7 +564,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">낼 달러 원화로 바꿔서 추매하려는데 달러는 그냥 가지고 있을까요??</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="에효 장투 가보자 에효 장투 가보자 | RISE 현대차고정피지컬AI 50주 1주당 12,235원 · 6월 8일 11:20">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">치킨치킨치킨값</span>
@@ -565,7 +573,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">에효 장투 가보자 | RISE 현대차고정피지컬AI 50주 1주당 12,235원 · 6월 8일 11:20</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="변동성 무엇">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">PaleBlueDott</span>
@@ -574,7 +582,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">변동성 무엇</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="스페이스 엑스 때문인가 겁나게들 빠지고 있네">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">너잡으러가는사냥꾼</span>
@@ -583,7 +591,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">스페이스 엑스 때문인가 겁나게들 빠지고 있네</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="평단1.45  몇년형임?">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">대장부사나이</span>
@@ -592,7 +600,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">평단1.45 <br>몇년형임?</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="이노텍 비중좀 줄이면안되나…. 피지컬 AI보다 반도체 유리기판 쪽이나 핸드폰 카메라,센서가 비중이 훨씬 큰 회사인데">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">국정원에잠들다</span>
@@ -612,7 +620,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
           </div>
           <div class="card-summary">혼란 속에서도 장기 투자 기대와 분할 매수 조언이 주를 이룬다</div>
           <div class="card-detail">
-            <div class="comment">
+            <div class="comment" data-search="내일 도 떨어진대요 분할매수 ㆍㆍㆍㆍㅈㆍ">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">객관적인호재소식짱</span>
@@ -621,7 +629,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">내일 도 떨어진대요</div>
               <div class="comment-body">분할매수 ㆍㆍㆍㆍㅈㆍ</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="유후 분배금 나왔던걸로 16500에 400주 주웠네요">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">구르는다리미</span>
@@ -630,7 +638,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">유후</div>
               <div class="comment-body">분배금 나왔던걸로<br>16500에 400주 주웠네요</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="서킷브레이킹 인가 머시기인가 걸린거에요? 왜 매수가 안되지">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">삼겹살맛도리</span>
@@ -639,7 +647,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">서킷브레이킹</div>
               <div class="comment-body">인가 머시기인가 걸린거에요?<br>왜 매수가 안되지</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="안도와 주네 나스닥 선물 하락으로 반전 환율1,541.40 -1.16">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">황금박쥐7</span>
@@ -648,7 +656,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">안도와 주네</div>
               <div class="comment-body">나스닥 선물 하락으로 반전<br>환율1,541.40 -1.16</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="AI버블? 이제 시작인데 오늘 매수한 분들 축하드려요. 땡 잡은 겁니다.">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">황금박쥐7</span>
@@ -657,7 +665,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">AI버블?</div>
               <div class="comment-body">이제 시작인데 오늘 매수한 분들 축하드려요.<br>땡 잡은 겁니다.</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="스페이스 X 상장전부터 요란하네요.. 스엑 자금조달로 인한 조정이라는데.. 어디까지일지... 다른 이유는 없으니.. 기다리면 오릅니다.">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">당찬수익전망연주자</span>
@@ -666,7 +674,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">스페이스 X</div>
               <div class="comment-body">상장전부터 요란하네요.. 스엑 자금조달로 인한 조정이라는데.. 어디까지일지... 다른 이유는 없으니..<br>기다리면 오릅니다.</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="이재명 정부의 고환율 특단의 대책 시작 이재명 정부의 고환율 특단의 대책 시작">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">rive00</span>
@@ -675,7 +683,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">이재명 정부의 고환율 특단의 대책 시작</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="오늘  환율과 미선물 선반영해 폭락했지만 미국 프리마켓장에서 선물 폭등중 미국 본장에서 현상태로 장이 끝난다면 9일 한국장은 전날 데미지 먹은것 포함해 반영 되어야한다.">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">황금박쥐7</span>
@@ -684,7 +692,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">오늘  환율과 미선물 선반영해 폭락했지만</div>
               <div class="comment-body">미국 프리마켓장에서 선물 폭등중 미국 본장에서 현상태로 장이 끝난다면 9일 한국장은 전날 데미지 먹은것 포함해 반영 되어야한다.</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="6월수익 다 날라가네요 6월안에 다시 복구좀 시켜주세요">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">65억벌때까지일한다</span>
@@ -693,7 +701,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">6월수익 다 날라가네요</div>
               <div class="comment-body">6월안에 다시 복구좀 시켜주세요</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="16850 추미액!!!!! 추뭭!!!!!!">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">휩쏘에당함</span>
@@ -702,7 +710,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">16850 추미액!!!!!</div>
               <div class="comment-body">추뭭!!!!!!</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="1000주 매수 입주했습니다">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">갬성보단현실</span>
@@ -711,7 +719,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">1000주 매수 입주했습니다</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="환율 -20원 폭락! 왜이리 폭락하나?">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">clrclr</span>
@@ -720,7 +728,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">환율 -20원 폭락!</div>
               <div class="comment-body">왜이리 폭락하나?</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="샌디스크 샌디좀 넣어주세용 rp님들">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">애교있는이득하이랭커</span>
@@ -729,7 +737,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">샌디스크</div>
               <div class="comment-body">샌디좀 넣어주세용 rp님들</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="환율 반영을 얼마나 하려나?">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">황금박쥐7</span>
@@ -738,7 +746,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">환율 반영을</div>
               <div class="comment-body">얼마나 하려나?</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="할인할때마다 담아가는중~ 오늘도 잘먹고갑니당">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">어넝융</span>
@@ -747,7 +755,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">할인할때마다 담아가는중~</div>
               <div class="comment-body">오늘도 잘먹고갑니당</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="국민연금으로 환율개입중 선물환매도 오는부터 시작.">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">빈털터리</span>
@@ -756,7 +764,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">국민연금으로 환율개입중</div>
               <div class="comment-body">선물환매도 오는부터 시작.</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="파란불이면 사는거야">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">바나나버터</span>
@@ -765,7 +773,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">파란불이면 사는거야</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="내일은 추매하는 날">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">조아마심</span>
@@ -774,7 +782,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">내일은</div>
               <div class="comment-body">추매하는 날</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="와우 떨어지면 사야죠">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">나만빼고다수익인가</span>
@@ -783,7 +791,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">와우</div>
               <div class="comment-body">떨어지면 사야죠</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="어차피 장기투자니까 스택쌓기^^">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">부기팝</span>
@@ -792,7 +800,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">어차피 장기투자니까 스택쌓기^^</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="금요일 하락에도 버티네... Ai짱인가 ㅎ">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">당근머니</span>
@@ -801,7 +809,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">금요일 하락에도 버티네...</div>
               <div class="comment-body">Ai짱인가 ㅎ</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="지금사지마세요 괴리율 보고 사세요">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">물타고차타고</span>
@@ -810,7 +818,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">지금사지마세요</div>
               <div class="comment-body">괴리율 보고 사세요</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="6월중순까지 추매">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">SLOWQUICKSTEADY</span>
@@ -819,7 +827,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">6월중순까지 추매</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="올 생각보다 잘버티네">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">꾸님아</span>
@@ -828,7 +836,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">올 생각보다 잘버티네</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="저번주 금요일 비쌀때 잘못 들어갔다…아…">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">Go대박기운</span>
@@ -848,7 +856,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
           </div>
           <div class="card-summary">혼합형 ETF에 대한 긍정적 기대와 매수 의향이 주를 이루고 있음</div>
           <div class="card-detail">
-            <div class="comment">
+            <div class="comment" data-search="매수찬스? 이거지금 매수찬스 인가요?">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">silvertab77</span>
@@ -857,7 +865,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">매수찬스?</div>
               <div class="comment-body">이거지금 매수찬스 인가요?</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="금요일에 다 팔고 구경옴^^ 야르~ㅋㅋㅋㅋ">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">다채로운사이클자매</span>
@@ -866,7 +874,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">금요일에 다 팔고 구경옴^^</div>
               <div class="comment-body">야르~ㅋㅋㅋㅋ</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="이걸 회복하네 역시 짱!">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">굳센저점매수프린세스</span>
@@ -875,7 +883,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">이걸 회복하네</div>
               <div class="comment-body">역시 짱!</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="내일은 어떻게 예상하시나요? 급반등할까요? 아니면..다시 하락?..ㅜㅜ">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">오드리십번</span>
@@ -884,7 +892,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">내일은 어떻게 예상하시나요?</div>
               <div class="comment-body">급반등할까요?<br>아니면..다시 하락?..ㅜㅜ</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="미선물 오르고 있고 삼전 30만 고지 밟고있고 하닉 200만 고지 탈환시도중 내일은 폭등한다 걱정말고 밤에 푹자라">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">소시민ss</span>
@@ -893,7 +901,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">미선물 오르고 있고</div>
               <div class="comment-body">삼전 30만 고지 밟고있고<br>하닉 200만 고지 탈환시도중<br>내일은 폭등한다<br>걱정말고 밤에 푹자라</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="조금 더 떨어지면 그때 다시 들어 가야지">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">금호강물</span>
@@ -902,7 +910,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">조금 더 떨어지면 그때 다시 들어 가야지</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="아 아침에 더살껄껄껄">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">Gju0</span>
@@ -911,7 +919,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">아 아침에</div>
               <div class="comment-body">더살껄껄껄</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="오늘 퇴직연금 으로 입성했습니다. 퇴직연금 안전자산 30프로   매수가능 하다는 소식을 이제서야 듣고 오늘 입성했습니다. 잘부탁드립니다 가 즈 아 삼성 하닉">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">떠혀니다</span>
@@ -920,7 +928,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">오늘 퇴직연금 으로 입성했습니다.</div>
               <div class="comment-body">퇴직연금 안전자산 30프로  <br>매수가능 하다는 소식을 이제서야 듣고 오늘 입성했습니다. 잘부탁드립니다<br>가 즈 아 삼성 하닉</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="ㅜ 월급이멀었는데">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">나도돈벌고싶네</span>
@@ -929,7 +937,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">ㅜ</div>
               <div class="comment-body">월급이멀었는데</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="방어력은 역시 채권">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">마켄젠</span>
@@ -938,7 +946,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">방어력은 역시 채권</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="천만원이 없어서 레버리지를 못사네.. 하  이거라도 올라줘라">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">지구밖뿅</span>
@@ -947,7 +955,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">천만원이 없어서 레버리지를 못사네.. 하 <br>이거라도 올라줘라</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="이거나 현차나 그래프가 똑같네 어느걸 버릴가요">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">너잡으러가는사냥꾼</span>
@@ -956,7 +964,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">이거나<br>현차나<br>그래프가 똑같네<br>어느걸 버릴가요</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="추매요 추매요 ㅎㅎ">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">Etx</span>
@@ -965,7 +973,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">추매요 ㅎㅎ</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="생각보다 잘버티네 와 검은 월요일이라며!!! 바로 뺀다고 한거 취소..">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">모찌모찌즌다</span>
@@ -974,7 +982,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">생각보다 잘버티네 와<br>검은 월요일이라며!!!<br>바로 뺀다고 한거 취소..</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="빠지는애들은 단타인가? 모지리들인가? 평단이높은애들인가? 신기방기하네">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">뒷북맨</span>
@@ -983,7 +991,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">빠지는애들은 단타인가? 모지리들인가? 평단이높은애들인가? 신기방기하네</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="오늘 좀 담아볼까">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">보글헤드망곰</span>
@@ -1003,7 +1011,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
           </div>
           <div class="card-summary">혼란스러운 가격 변동에 투자자들의 의견 분분</div>
           <div class="card-detail">
-            <div class="comment">
+            <div class="comment" data-search="급락이 폭낙수준이네... 예상보다 너무 떨어지네....">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">실속형적중구루</span>
@@ -1012,7 +1020,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">급락이 폭낙수준이네...</div>
               <div class="comment-body">예상보다 너무 떨어지네....</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="Rise 위커보다 낮은 변동성 원하시나요 플러스위커채권혼합 나욌습니다. 70대이상은 요거 추천 합니다.">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">알지모르지알지모르지</span>
@@ -1021,7 +1029,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">Rise 위커보다 낮은 변동성 원하시나요</div>
               <div class="comment-body">플러스위커채권혼합 나욌습니다.<br>70대이상은 요거 추천 합니다.</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="RISE 200위클리커버드콜 30주 1주당 14,300원 · 6월 8일 09:34">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">급등주절대안탐</span>
@@ -1030,7 +1038,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">RISE 200위클리커버드콜 30주 1주당 14,300원 · 6월 8일 09:34</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="사..살려주시오!!!!! 다시는....넘어오지 않겠소...!!!!!!">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">주주오너</span>
@@ -1039,7 +1047,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">사..살려주시오!!!!!</div>
               <div class="comment-body">다시는....넘어오지 않겠소...!!!!!!</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="내일 회복하겠군 휴......">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">따따따따따따따땃</span>
@@ -1048,7 +1056,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">내일 회복하겠군 휴......</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="또 올라가신다">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">인생젠컷</span>
@@ -1057,7 +1065,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">또 올라가신다</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="나도 내일 사야겟당">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">방울이다</span>
@@ -1066,7 +1074,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">나도 내일 사야겟당</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="그냥뺄껄.ㅠ">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">10년뒤엔주식부자</span>
@@ -1075,7 +1083,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">그냥뺄껄.ㅠ</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="1프로 수익중인데 마이너스가 깊어지겠구나">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">대화좀하자</span>
@@ -1084,7 +1092,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">1프로 수익중인데 마이너스가 깊어지겠구나</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="버티길 잘했군 ㅠㅠ">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">꽃보다사슴</span>
@@ -1093,7 +1101,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">버티길 잘했군 ㅠㅠ</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="위클리 커버드콜이라 방어를 못하는군">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">물타고차타고</span>
@@ -1102,7 +1110,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">위클리 커버드콜이라</div>
               <div class="comment-body">방어를 못하는군</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="RISE 200위클리커버드콜 500주 +545,000원 (8.07%) 1주당 14,595원 · 6월 8일 09:35">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">합동참모본부</span>
@@ -1111,7 +1119,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">RISE 200위클리커버드콜 500주 +545,000원 (8.07%) 1주당 14,595원 · 6월 8일 09:35</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="아오씨 돈 좀 있었음 13000원대에 줍는건데">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">가즈아중독</span>
@@ -1120,7 +1128,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">아오씨 돈 좀 있었음 13000원대에 줍는건데</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="지금 살건데 왜 서킷이냐;;;">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">1억만드는법3억투자하기</span>
@@ -1140,7 +1148,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
           </div>
           <div class="card-summary">혼란스러운 의견 교차, 일부 매수 기대와 매도 우려 공존</div>
           <div class="card-detail">
-            <div class="comment">
+            <div class="comment" data-search="초고점에 레버리지까지 상장? 개거품 시작이지 ㅋㅋㅋㅋㅋ 팔아먹으려고 용쓰네">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">13579</span>
@@ -1149,7 +1157,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">초고점에 레버리지까지 상장? 개거품 시작이지</div>
               <div class="comment-body">ㅋㅋㅋㅋㅋ 팔아먹으려고 용쓰네</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="PBR 0.25의 한화생명으로 오세요 속편합니다. 한화3형제승계도 거의 마무리됐고, 비슷한 승계문제에서 승계가 마무리된 후 대폭발한 삼성생명처럼 PBR 1.5이상갑니다. 주가누르기방지법도 머잖아 시행이 되면 오너가가 더 이상 주가 누를 힘도, 이유도 없습니다. 어차피 오를거 강력한 주가부양책 기자회견 발표로 아예 대놓고 끌어올립니다. 한화가문도 국내 알아주는 재벌그룹인데 어차피 올릴거면 삼성처럼 엄청난 시총의 그룹을 갖고싶을겁니다. 이제 곧 7배 쏩니다 ~~~">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">뭐생</span>
@@ -1158,7 +1166,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">PBR 0.25의 한화생명으로 오세요</div>
               <div class="comment-body">속편합니다. 한화3형제승계도 거의 마무리됐고, 비슷한 승계문제에서 승계가 마무리된 후 대폭발한 삼성생명처럼 PBR 1.5이상갑니다. 주가누르기방지법도 머잖아 시행이 되면 오너가가 더 이상 주가 누를 힘도, 이유도 없습니다. 어차피 오를거 강력한 주가부양책 기자회견 발표로 아예 대놓고 끌어올립니다. 한화가문도 국내 알아주는 재벌그룹인데 어차피 올릴거면 삼성처럼 엄청난 시총의 그룹을 갖고싶을겁니다. 이제 곧 7배 쏩니다 ~~~</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="살아잇니? 욕심쟁이들 살아잇니??">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">명랑한급등딱따구리</span>
@@ -1167,7 +1175,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">살아잇니?</div>
               <div class="comment-body">욕심쟁이들 살아잇니??</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="더 나락가자  모아니면도다~">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">참어이없네</span>
@@ -1176,7 +1184,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">더 나락가자  모아니면도다~</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="한 많은 인생살이 수지 맞는 장사 잖소   알~몸으로 태어나서 옷 한 벌은 건졌잖소">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">아기팬더푸</span>
@@ -1185,7 +1193,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">한 많은 인생살이 수지 맞는 장사 잖소 <br><br>알~몸으로 태어나서 옷 한 벌은 건졌잖소</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="오늘 매수한다">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">충격적인</span>
@@ -1194,7 +1202,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">오늘 매수한다</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="좋은기회잖냐">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">전삼이</span>
@@ -1203,7 +1211,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">좋은기회잖냐</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="하아….. 씨..하아…에휴">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">chiwawarunout</span>
@@ -1212,7 +1220,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">하아…..</div>
               <div class="comment-body">씨..하아…에휴</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="난리났네 어쩔">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">이름없음네다</span>
@@ -1232,7 +1240,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
           </div>
           <div class="card-summary">혼란과 회복 기대가 공존하는 중립적 반응</div>
           <div class="card-detail">
-            <div class="comment">
+            <div class="comment" data-search="오늘부터 적립식으로 매수하려고 하는데용 오늘 매수하면, 첫 배당은 언제 받게 되는지 좀 알려주세요!">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">Lucidwings0</span>
@@ -1241,7 +1249,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">오늘부터 적립식으로 매수하려고 하는데용</div>
               <div class="comment-body">오늘 매수하면, 첫 배당은 언제 받게 되는지 좀 알려주세요!</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="아침에깜짝놀라는데 다행">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">크리스퍼테라뷰틱스10층가즈아</span>
@@ -1250,7 +1258,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">아침에깜짝놀라는데 다행</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="Day 5">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">Threecommas</span>
@@ -1259,7 +1267,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">Day 5</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="낙폭도 심한데 회복도 느리네.. 그냥 ai밸류에 다박을걸..">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">정많은논쟁왕자</span>
@@ -1268,7 +1276,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">낙폭도 심한데</div>
               <div class="comment-body">회복도 느리네.. 그냥 ai밸류에 다박을걸..</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="이번달 배당은 언제일까요?">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">월배당천만원파이어족</span>
@@ -1277,7 +1285,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">이번달 배당은 언제일까요?</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="당장 복구 해놔라 잉~~ ETF 빼곤 전부 마이너스다 잉 ㅠㅠ">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">내일모레빚가프리오</span>
@@ -1286,7 +1294,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">당장 복구 해놔라 잉~~<br>ETF 빼곤 전부 마이너스다 잉 ㅠㅠ</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="낼 추매 💕">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">월배당70목표</span>
@@ -1306,7 +1314,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
           </div>
           <div class="card-summary">혼란스러운 반응 속에 일부 긍정적인 주가 상승 기대 표명</div>
           <div class="card-detail">
-            <div class="comment">
+            <div class="comment" data-search="승냥이 묻어서 떨어지는거다 이놈아 고점 판독기다">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">남다른이득쉐프</span>
@@ -1315,7 +1323,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">승냥이 묻어서 떨어지는거다</div>
               <div class="comment-body">이놈아 고점 판독기다</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="2만원이 웬말이냐 만원이면 떡을친다">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">견고한상승전략올빼미</span>
@@ -1324,7 +1332,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">2만원이 웬말이냐</div>
               <div class="comment-body">만원이면 떡을친다</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="PBR 0.25의 한화생명으로 오세요 속편합니다. 한화3형제승계도 거의 마무리됐고, 비슷한 승계문제에서 승계가 마무리된 후 대폭발한 삼성생명처럼 PBR 1.5이상갑니다. 주가누르기방지법도 머잖아 시행이 되면 오너가가 더 이상 주가 누를 힘도, 이유도 없습니다. 어차피 오를거 강력한 주가부양책 기자회견 발표로 아예 대놓고 끌어올립니다. 한화가문도 국내 알아주는 재벌그룹인데 어차피 올릴거면 삼성처럼 엄청난 시총의 그룹을 갖고싶을겁니다. 이제 곧 7배 쏩니다 ~~~">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">뭐생</span>
@@ -1333,7 +1341,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">PBR 0.25의 한화생명으로 오세요</div>
               <div class="comment-body">속편합니다. 한화3형제승계도 거의 마무리됐고, 비슷한 승계문제에서 승계가 마무리된 후 대폭발한 삼성생명처럼 PBR 1.5이상갑니다. 주가누르기방지법도 머잖아 시행이 되면 오너가가 더 이상 주가 누를 힘도, 이유도 없습니다. 어차피 오를거 강력한 주가부양책 기자회견 발표로 아예 대놓고 끌어올립니다. 한화가문도 국내 알아주는 재벌그룹인데 어차피 올릴거면 삼성처럼 엄청난 시총의 그룹을 갖고싶을겁니다. 이제 곧 7배 쏩니다 ~~~</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="음의 복리 어쩌구 저쩌구">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">내로남불</span>
@@ -1342,7 +1350,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">음의 복리 어쩌구 저쩌구</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="난리낫다">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">이름없음네다</span>
@@ -1362,7 +1370,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
           </div>
           <div class="card-summary">혼란 속에서도 일부 긍정적 매수 의견과 기대 유지</div>
           <div class="card-detail">
-            <div class="comment">
+            <div class="comment" data-search="오늘이 줍는날 이유는 당연할테니 줍줍">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">진실된주식갑부</span>
@@ -1371,7 +1379,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">오늘이 줍는날</div>
               <div class="comment-body">이유는 당연할테니 줍줍</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="매도 걸어둔거 팔렸네... 커피값... 감사합니다...">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">양념고기</span>
@@ -1380,7 +1388,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">매도 걸어둔거 팔렸네...</div>
               <div class="comment-body">커피값... 감사합니다...</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="평화롭다 국내장 망하든 말든 여긴 평화롭네">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">주주개구리</span>
@@ -1389,7 +1397,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">평화롭다</div>
               <div class="comment-body">국내장 망하든 말든 여긴 평화롭네</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="기대한거보다 하락이 낮은데 내일되면 더 떨어지겠죠?">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">내로남불</span>
@@ -1398,7 +1406,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">기대한거보다 하락이 낮은데 내일되면 더 떨어지겠죠?</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="역시 뭔가 하나는 안정적인 걸 같이 들고 가야 돼...">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">안본다차트하락장빼고</span>
@@ -1418,7 +1426,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
           </div>
           <div class="card-summary">투자자들은 안정성과 배당 증가에 긍정적 반응을 보임</div>
           <div class="card-detail">
-            <div class="comment">
+            <div class="comment" data-search="내가 이녀석을 가져있는이유 시장이 크게 하락때 이녀석만은 항상 살아남음 그게 사람들이 다우존스를 선택한 이유같음">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">베지커09</span>
@@ -1427,7 +1435,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">내가 이녀석을 가져있는이유</div>
               <div class="comment-body">시장이 크게 하락때<br>이녀석만은 항상 살아남음<br>그게 사람들이 다우존스를 선택한 이유같음</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="잘 버티네.. ㅇㅋ 5년동안 묵혀보자">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">histock</span>
@@ -1436,7 +1444,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">잘 버티네..</div>
               <div class="comment-body">ㅇㅋ 5년동안 묵혀보자</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="우와. 얘는 뭐죠? 멧집이 장난 아니네요. ^^">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">개방적인논쟁컨트롤러</span>
@@ -1445,7 +1453,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">우와. 얘는 뭐죠?</div>
               <div class="comment-body">멧집이 장난 아니네요. ^^</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="맷집강한이유 국내상장된 미국슈드반이라그래요 schd전세보증금 넣어도 안전한주식 매년 배당을 늘리는주식 실적 기반 배당늘려온주식집단이라 든든합니다">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">룡던</span>
@@ -1454,7 +1462,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">맷집강한이유</div>
               <div class="comment-body">국내상장된<br>미국슈드반이라그래요<br>schd전세보증금 넣어도<br>안전한주식 매년<br>배당을 늘리는주식<br>실적 기반 배당늘려온주식집단이라<br>든든합니다</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="환율때문에 하락 상쇄되는거보소.. 환율때문에 하락 상쇄되는거보소.. 레전드">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">돈좀벌어봅슈</span>
@@ -1474,7 +1482,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
           </div>
           <div class="card-summary">혼란스러운 투자자 반응, 상승 후 불안과 실망 공존</div>
           <div class="card-detail">
-            <div class="comment">
+            <div class="comment" data-search="허겁지겁 조정 끝났냐!!!">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">부유하지못해미안해</span>
@@ -1483,7 +1491,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">허겁지겁</div>
               <div class="comment-body">조정 끝났냐!!!</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="오를 줄 알고 허겁지겁 주웠는데 다시 내려가네유..">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">쪼미가자</span>
@@ -1492,7 +1500,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">오를 줄 알고 허겁지겁 주웠는데 다시 내려가네유..</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="강제로 추매 타이밍 ㅋㅋㅋ">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">파파우디</span>
@@ -1501,7 +1509,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">강제로</div>
               <div class="comment-body">추매 타이밍 ㅋㅋㅋ</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="어익후 뭔가불안하단말이여">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">보거습</span>
@@ -1521,7 +1529,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
           </div>
           <div class="card-summary">혼란스러운 반응, 일부는 긍정적 평단가 언급</div>
           <div class="card-detail">
-            <div class="comment">
+            <div class="comment" data-search="선전하고 있는 etf 이정도면 금방 말아올릴듯">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">철학적인직관력지키미</span>
@@ -1530,7 +1538,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">선전하고 있는 etf</div>
               <div class="comment-body">이정도면 금방 말아올릴듯</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="평단 5만원은 여유롭다">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">하루벌어하루사는깝돌이</span>
@@ -1539,7 +1547,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">평단 5만원은 여유롭다</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="뭐vi발동니냐 뭐vi발동니냐 왜이랴">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">미나리나물</span>
@@ -1559,7 +1567,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
           </div>
           <div class="card-summary">투자자들 사이에서 회의적이고 우려하는 반응이 주를 이룸</div>
           <div class="card-detail">
-            <div class="comment">
+            <div class="comment" data-search="10층 실화냐 아직까지 들고있으면 보살이다. 오늘 종가에 들어갔으면 잘한거고">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">tenbagger1</span>
@@ -1568,7 +1576,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">10층 실화냐</div>
               <div class="comment-body">아직까지 들고있으면 보살이다. 오늘 종가에 들어갔으면 잘한거고</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="어버버 하다 20퍼 손실 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ임빙 ㅋㅋㅋㅋㅋㅋㅋㅋㅋ">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">매일4프로</span>
@@ -1577,7 +1585,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">어버버 하다 20퍼 손실 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ임빙 ㅋㅋㅋㅋㅋㅋㅋㅋㅋ</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="숨긴종목 언젠간오르겠지 안볼란다 니는ㅠㅠ">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">하늘만큼올라</span>
@@ -1597,7 +1605,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
           </div>
           <div class="card-summary">긍정적인 뉴스에 따른 전력 인프라 관련 ETF에 대한 기대감 상승</div>
           <div class="card-detail">
-            <div class="comment">
+            <div class="comment" data-search="느낌이 왔어어요!!  “젠슨 황 &quot;정의선 제안으로 &#39;AI 밸리&#39; 새만금에 데이터센터 건립&quot; ”네이버-엔비디아, 국내 최초 기가와트급 AI팩토리 짓는다…각 세종 4배 규모“  전력 인프라 다시 폭등할거 같아요😍">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">아소오프너</span>
@@ -1606,7 +1614,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">느낌이 왔어어요!!<br><br>“젠슨 황 "정의선 제안으로 'AI 밸리' 새만금에 데이터센터 건립"<br>”네이버-엔비디아, 국내 최초 기가와트급 AI팩토리 짓는다…각 세종 4배 규모“<br><br>전력 인프라 다시 폭등할거 같아요😍</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="진짜가 왔다">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">나모해</span>
@@ -1615,7 +1623,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">진짜가 왔다</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="오~ 오늘은 -30 까지 찍겠군">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">수진역</span>
@@ -1635,7 +1643,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
           </div>
           <div class="card-summary">투자자들은 배당 수익에 긍정적이나 투자 방법에 대한 의문 제기</div>
           <div class="card-detail">
-            <div class="comment">
+            <div class="comment" data-search="좀 떨어져도 괜찮아~~배당만 많이 준다면">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">민원빈</span>
@@ -1644,7 +1652,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               
               <div class="comment-body">좀 떨어져도 괜찮아~~배당만 많이 준다면</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="이거 계좌 어디로 투자하나요? 일반계좌 괜찮나요? 절세로 해야되나요?">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">나뚜믄오른다했다</span>
@@ -1664,7 +1672,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
           </div>
           <div class="card-summary">상한가 기록, 투자자들 긍정적 반응</div>
           <div class="card-detail">
-            <div class="comment">
+            <div class="comment" data-search="상한가를 기록했어요 📈 가격변동 현재가 1,665원 상한가 384 +29.98% (KRX 기준)">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">RISE 200선물인버스 ...</span>
@@ -1673,7 +1681,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
               <div class="comment-title">상한가를 기록했어요 📈</div>
               <div class="comment-body">가격변동<br>현재가 1,665원<br>상한가<br>384 +29.98% (KRX 기준)</div>
             </div>
-            <div class="comment">
+            <div class="comment" data-search="키키키키키ㅣ키키키키킼 키키키키키키키킼키키키ㅣ">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">고래고래111</span>
@@ -1693,7 +1701,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
           </div>
           <div class="card-summary">긍정적인 투자 기대감이 반영된 간단한 응원 댓글들</div>
           <div class="card-detail">
-            <div class="comment">
+            <div class="comment" data-search="가자 로봇 가자">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">미장이답이다용</span>
@@ -1713,7 +1721,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
           </div>
           <div class="card-summary">선거 결과에 따른 반응으로 다양한 의견 혼재</div>
           <div class="card-detail">
-            <div class="comment">
+            <div class="comment" data-search="선거 끝났지">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">진짜로원하는것</span>
@@ -1733,7 +1741,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
           </div>
           <div class="card-summary">투자자 일부 매도 후 관망 중, 긍정적 수익률 보임</div>
           <div class="card-detail">
-            <div class="comment">
+            <div class="comment" data-search="절반 팔고 일주일 관망 절반 팔고 일주일 관망 | RISE 미국나스닥100 200주 +3,015,462원 (82.63%) 1주당 33,325원 · 6월 8일 08:50">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">아침호랑이</span>
@@ -1753,7 +1761,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
           </div>
           <div class="card-summary">신규 투자자들의 실망감 표출</div>
           <div class="card-detail">
-            <div class="comment">
+            <div class="comment" data-search="니기럴 2일에 첫진입했는데 1주일도 안되서 14%마이너스라니">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">리메디오스</span>
@@ -1773,7 +1781,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
           </div>
           <div class="card-summary">구체적인 댓글 내용 부족으로 중립적 반응 추정</div>
           <div class="card-detail">
-            <div class="comment">
+            <div class="comment" data-search="RISE 코리아전략산업액티브 100주 1주당 17,715원 · 6월 8일 09:41">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">살려줘퉷</span>
@@ -1793,7 +1801,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
           </div>
           <div class="card-summary">부정적인 국채 관련 언급으로 투자 우려 제기</div>
           <div class="card-detail">
-            <div class="comment">
+            <div class="comment" data-search="재매이덕에 한국 국채 나락 가는구나 적자국채 찍어 향우회들 빼먹을때 좋았지?">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">핫미슈</span>
@@ -1813,7 +1821,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
           </div>
           <div class="card-summary">투자자들은 ETF 'RISE 미국반도체NYSE'의 높은 괴리율에 우려를 표시</div>
           <div class="card-detail">
-            <div class="comment">
+            <div class="comment" data-search="괴리율이 다 높네요.">
               <div class="comment-meta">
                 <span class="badge" style="background:#0064FF">토스</span>
                 <span class="author">니어워터포도</span>
@@ -1833,7 +1841,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
           </div>
           <div class="card-summary">투자자들은 인버스 ETF의 변동성에 우려를 표하며 시장 불확실성 속 안정성을 기대</div>
           <div class="card-detail">
-            <div class="comment">
+            <div class="comment" data-search="지금은 삼전닉스도 힘든 시장이니 따로 가타부타 얘기하진 않으께 시장 좋아도 안오르고, 시장 안좋으면 여지없이 폭락하는 LG SDI 포스코 에코 대신 이종목 인버스가지고 있으면 지금 시황에 얼마나 든든하겠니. 이런글에 열받아 비추나 누르지 말고 걍 여기로 들어와... 반도체 갈지 안갈지 거래소나 코스닥 갈지 안갈지 나는 몰라 그래도 2차전지가 갈지 안갈지는 알지. 현재로선 전혀 갈 일 없다. 여기가 장투자리야">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">바가본도</span>
@@ -1853,7 +1861,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
           </div>
           <div class="card-summary">워렌버핏 철학에 기반한 장기 투자 기대</div>
           <div class="card-detail">
-            <div class="comment">
+            <div class="comment" data-search="워렌버핏의 평생의 철학이 담긴 정수 찰리멍거와 워렌버핏이 기업을 인수하고 선택할때 가장 중요시한 점은 이 사업이 내가 죽고나서도 100년뒤에도 존속하는가였다? 지루하고 재미없는 금융 소비재 주식만 사는 이유도 장기적으로 100년뒤에 존속할 사업인가를 봤기 때문이다 워렌버핏과 찰리멍거의 투자철학을 소유할수 있는 주식이다 버크셔해서웨이 비중이 높아 가이코 철도 시즈캔디 듀라셀 에너지같은 버크셔 복합기업에 집중적으로 투자할수있고 버핏과 멍거 평생에 걸쳐 선별한 코카콜라 아메리칸 익스프레스 무디스 애플에 추가로 집중투자한다 코카콜라는 38년 아메리칸 익스프레스는 40년넘게 보유중이라 버핏이 타계한다고 해도 사실 팔 이유가 없어진 종목들이다 버핏이란 현자의 안목을 믿는다면 믿고 투자하라">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">유토피아스텔스</span>
@@ -1873,7 +1881,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
           </div>
           <div class="card-summary">부정적인 반응으로 주가 하락 우려 제기</div>
           <div class="card-detail">
-            <div class="comment">
+            <div class="comment" data-search="동시호가에 400주로 4프로른 후려치네 이게주식이냐">
               <div class="comment-meta">
                 <span class="badge" style="background:#03C75A">네이버</span>
                 <span class="author">고수레벨</span>
@@ -1885,13 +1893,86 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',
           </div>
         </div>
   </div>
-
-  <!-- 3) 조용했던 종목 -->
-  <div class="silent-section" onclick="this.classList.toggle('open')">
-    <div class="silent-header">📌 어제 조용했던 종목 115개 (펼치기)</div>
-    <div class="silent-list">RISE 200, RISE 코리아밸류업, RISE ESG사회책임투자, RISE 머니마켓액티브, RISE AI반도체TOP10, RISE 200TR, RISE 200선물레버리지, RISE 미국30년국채엔화노출(합성 H), RISE 삼성그룹Top3채권혼합, RISE 수소경제테마, RISE TDF2050액티브 적격, RISE 고배당, RISE 단기통안채, RISE 2차전지TOP10, RISE 글로벌자산배분액티브, RISE 2차전지액티브, RISE 코스닥150선물레버리지, RISE 미국반도체NYSE(H), RISE 글로벌원자력, RISE IT플러스, RISE 차이나AI반도체TOP4Plus, RISE 메타버스, RISE 미국휴머노이드로봇, RISE CD금리액티브(합성), RISE 코스피, RISE 200채권혼합50, RISE 종합채권(A-이상)액티브, RISE 5대그룹주, RISE 코리아금융고배당, RISE 미국AI테크액티브, RISE 미국AI밸류체인TOP3Plus, RISE 헬스케어채권혼합, RISE 미국S&P500데일리고정커버드콜, RISE 미국30년국채커버드콜(합성), RISE 200금융, RISE 미국S&P500(H), RISE 미국S&P원유생산기업(합성 H), RISE 단기국공채액티브, RISE 미국AI전력인프라액티브, RISE 미국AI클라우드인프라, RISE 팔란티어고정테크100, RISE KOFR금리액티브(합성), RISE V&S셀렉트밸류채권혼합, RISE 미국양자컴퓨팅, RISE 국고채10년액티브, RISE 단기채권알파액티브, RISE 글로벌데이터센터리츠(합성), RISE TDF2040액티브 적격, RISE 글로벌주식분산액티브, RISE 200선물인버스2X, RISE 테슬라애플아마존채권혼합, RISE 중국본토대형주CSI100, RISE 단기특수은행채액티브, RISE 미국30년국채액티브, RISE 글로벌테크놀로지(합성 H), RISE 테슬라미국채타겟커버드콜혼합(합성), RISE 차이나항셍테크, RISE 중기우량회사채, RISE 게임테마, RISE 테슬라고정테크100, RISE 미국S&P배당킹, RISE 글로벌비만산업TOP2+, RISE 미국단기투자등급회사채액티브, RISE TDF2030액티브 적격, RISE 미국고배당다우존스TOP10, RISE 주식혼합, RISE 배터리 리사이클링, RISE 코스닥150선물인버스, RISE K엔터&여행레저, RISE V&S셀렉트밸류, RISE 미국천연가스밸류체인, RISE 동학개미, RISE 글로벌수소경제, RISE 내수주플러스, RISE 중소형고배당, RISE 엔비디아고정테크100, RISE 글로벌클린에너지, RISE 글로벌농업경제, RISE 금융채액티브, RISE 유로스탁스50(H), RISE 글로벌리얼티인컴, RISE 200고배당커버드콜ATM, RISE KQ고배당, RISE KRX300, RISE 미국고정배당우선증권, RISE 팔라듐선물(H), RISE 미국달러SOFR금리액티브(합성), RISE 미국반도체인버스(합성 H), RISE 국고채3년, RISE 헬스케어, RISE 미국S&P500엔화노출(합성 H), RISE 인도디지털성장, RISE 차이나테크TOP10위클리타겟커버드콜, RISE 국채선물10년인버스, RISE 차이나HSCEI(H), RISE 26-11 회사채(AA-이상)액티브, RISE 중국MSCI China(H), RISE AI플랫폼, RISE 일본섹터TOP4Plus, RISE 수출주, RISE 중장기국공채액티브, RISE 국채30년레버리지(합성), RISE 미국장기국채선물(H), RISE 중국본토CSI300, RISE 팔라듐선물인버스(H), RISE 우량업종대표주, RISE 미국장기국채선물인버스(H), RISE 글로벌게임테크TOP3Plus, RISE 미국장기국채선물레버리지(합성 H), RISE 미국달러선물인버스, RISE 국고채3년선물인버스, RISE 차이나H선물인버스(H), RISE 국채선물3년, RISE 국채선물10년, RISE 국채선물5년추종</div>
-  </div>
+  <div class="no-results" id="no-results" style="display:none">검색 결과가 없습니다.</div>
 
 </div>
+<script>
+(function() {
+  const input = document.getElementById('search-input');
+  const cards = Array.from(document.querySelectorAll('.card'));
+  const totalLine = document.getElementById('total-line');
+  const noResults = document.getElementById('no-results');
+  const originalTotal = totalLine.textContent;
+
+  document.querySelectorAll('.comment-title, .comment-body').forEach(el => {
+    el.dataset.orig = el.innerHTML;
+  });
+
+  function escapeReg(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+  function highlight(el, term) {
+    if (!el) return;
+    const orig = el.dataset.orig || '';
+    if (!term) { el.innerHTML = orig; return; }
+    const ph = '@@RISE_BR_SENTINEL@@';
+    const safe = orig.replace(/<br\s*\/?>/gi, ph);
+    const re = new RegExp(escapeReg(term), 'gi');
+    el.innerHTML = safe.replace(re, m => '<mark>' + m + '</mark>').replace(new RegExp(ph, 'g'), '<br>');
+  }
+
+  function runSearch() {
+    const term = input.value.trim();
+    if (!term) {
+      cards.forEach(card => {
+        card.style.display = '';
+        card.classList.remove('open');
+        card.querySelectorAll('.comment').forEach(c => {
+          c.style.display = '';
+          highlight(c.querySelector('.comment-title'), '');
+          highlight(c.querySelector('.comment-body'), '');
+        });
+      });
+      totalLine.textContent = originalTotal;
+      noResults.style.display = 'none';
+      return;
+    }
+    const termLower = term.toLowerCase();
+    let matchedCards = 0, matchedComments = 0;
+    cards.forEach(card => {
+      let cardMatched = false, cnt = 0;
+      card.querySelectorAll('.comment').forEach(c => {
+        const data = (c.dataset.search || '').toLowerCase();
+        if (data.includes(termLower)) {
+          c.style.display = '';
+          cardMatched = true;
+          cnt++;
+          highlight(c.querySelector('.comment-title'), term);
+          highlight(c.querySelector('.comment-body'), term);
+        } else {
+          c.style.display = 'none';
+        }
+      });
+      if (cardMatched) {
+        card.style.display = '';
+        card.classList.add('open');
+        matchedCards++;
+        matchedComments += cnt;
+      } else {
+        card.style.display = 'none';
+        card.classList.remove('open');
+      }
+    });
+    totalLine.textContent = '🔍 "' + term + '" 검색결과: ' + matchedCards + '종목 ' + matchedComments + '건';
+    noResults.style.display = matchedCards === 0 ? 'block' : 'none';
+  }
+
+  let t;
+  input.addEventListener('input', () => {
+    clearTimeout(t);
+    t = setTimeout(runSearch, 120);
+  });
+  input.addEventListener('search', runSearch);
+})();
+</script>
 </body>
 </html>
