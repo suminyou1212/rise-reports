@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>네이버 X 토스 RISE ETF 일일 댓글 현황 (2026.07.19)</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',sans-serif; background:linear-gradient(135deg,#F4F7F9 0%,#E8EEF3 100%); color:#2C3E50; padding:30px 20px; line-height:1.5; }
+.container { max-width:1200px; margin:0 auto; }
+
+/* 상단 히어로 */
+.hero { background:#FFE082; color:#1A2E45; padding:18px 22px; border-radius:14px; margin-bottom:10px; box-shadow:0 4px 20px rgba(0,0,0,0.08); display:flex; justify-content:space-between; align-items:center; gap:16px; }
+.hero-left { display:flex; flex-direction:column; gap:10px; min-width:0; }
+.hero-title { font-size:22px; font-weight:900; letter-spacing:-0.6px; color:#1A2E45; line-height:1.2; }
+.hero-meta { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.hero-date { font-size:14px; font-weight:700; color:#1A2E45; opacity:0.85; }
+.hero-dept { font-size:12px; font-weight:800; color:#1A2E45; background:#FFBC00; padding:4px 12px; border-radius:20px; letter-spacing:-0.3px; }
+.hero-stats { display:flex; flex-direction:column; gap:8px; flex-shrink:0; }
+.hero-stat { font-size:13px; font-weight:800; padding:6px 14px; border-radius:20px; color:#fff; white-space:nowrap; text-align:center; min-width:96px; }
+.hero-stat.naver { background:#03C75A; }
+.hero-stat.toss { background:#0064FF; }
+.total-line { text-align:right; font-size:13px; font-weight:700; color:#1A2E45; margin-bottom:14px; padding-right:4px; }
+
+/* 카드 그리드 */
+.card-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(320px,1fr)); gap:14px; margin-bottom:20px; }
+.card { background:#fff; border-radius:10px; overflow:hidden; border-top:5px solid #F9A825; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+.card-header { display:flex; align-items:center; padding:14px 16px; cursor:pointer; gap:10px; }
+.card-header:hover { background:#FAFAFA; }
+.tag { font-size:11px; font-weight:700; padding:2px 8px; border-radius:4px; flex-shrink:0; white-space:nowrap; }
+.tag-positive { background:#E8F5E9; color:#2E7D32; }
+.tag-negative { background:#FFEBEE; color:#C62828; }
+.tag-neutral { background:#F5F5F5; color:#757575; }
+.etf-name { flex:1; font-weight:600; font-size:14px; }
+.count { font-size:12px; color:#666; white-space:nowrap; }
+.arrow { font-size:10px; color:#999; transition:transform .2s; }
+.card.open .arrow { transform:rotate(180deg); }
+.card-summary { padding:0 16px 12px; font-size:13px; color:#555; }
+.card-detail { display:none; padding:0 16px 16px; border-top:1px solid #EEE; }
+.card.open .card-detail { display:block; }
+
+/* 댓글 */
+.comment { padding:10px 0; border-bottom:1px solid #F0F0F0; }
+.comment:last-child { border-bottom:none; }
+.comment-meta { display:flex; align-items:center; gap:8px; margin-bottom:4px; flex-wrap:wrap; }
+.badge { color:#fff; font-size:11px; padding:2px 7px; border-radius:4px; font-weight:500; }
+.author { font-size:12px; color:#333; font-weight:600; }
+.date { font-size:11px; color:#999; }
+.meta-stat { font-size:11px; color:#888; }
+.comment-title { font-size:13px; font-weight:700; color:#1A2E45; margin-bottom:2px; word-break:break-word; }
+.comment-body { font-size:13px; color:#444; word-break:break-word; }
+.more-note { text-align:center; padding:10px; font-size:12px; color:#999; }
+
+/* 검색바 */
+.search-bar { margin-bottom:14px; position:relative; }
+.search-input { width:100%; padding:12px 44px 12px 16px; border:2px solid #E0E6EB; border-radius:10px; font-size:14px; font-family:inherit; background:#fff; outline:none; transition:border-color .15s; -webkit-appearance:none; }
+.search-input:focus { border-color:#F9A825; }
+.search-icon { position:absolute; right:16px; top:50%; transform:translateY(-50%); font-size:16px; color:#999; pointer-events:none; }
+mark { background:#FFF59D; color:inherit; padding:0 2px; border-radius:3px; font-weight:700; }
+.no-results { text-align:center; padding:40px 20px; color:#999; font-size:14px; background:#fff; border-radius:10px; }
+
+/* 반응형 */
+@media (max-width:600px) {
+  body { padding:12px 8px; }
+  .hero { padding:14px 16px; gap:10px; }
+  .hero-title { font-size:16px; }
+  .hero-date { font-size:12px; }
+  .hero-dept { font-size:10px; padding:3px 9px; }
+  .hero-stat { font-size:11px; padding:5px 10px; min-width:78px; }
+  .total-line { font-size:11px; }
+  .search-input { padding:10px 38px 10px 14px; font-size:13px; }
+  .card-grid { grid-template-columns:1fr; gap:10px; }
+  .card-header { padding:12px 14px; }
+  .etf-name { font-size:13px; }
+  .comment-body { font-size:12px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- 1) 히어로 -->
+  <div class="hero">
+    <div class="hero-left">
+      <div class="hero-title">RISE ETF 일일 댓글 현황</div>
+      <div class="hero-meta">
+        <span class="hero-date">2026.07.19 (일)</span>
+        <span class="hero-dept">디지털마케팅본부</span>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <span class="hero-stat naver">네이버 7건</span>
+      <span class="hero-stat toss">토스 18건</span>
+    </div>
+  </div>
+
+  <div class="total-line" id="total-line">총 12종목 25건</div>
+
+  <!-- 2) 검색바 -->
+  <div class="search-bar">
+    <input type="search" id="search-input" class="search-input" placeholder="댓글 제목·본문 검색 (예: 배당, 수익률, 괴리율, 종목…)" autocomplete="off">
+    <span class="search-icon">🔍</span>
+  </div>
+
+  <!-- 3) 댓글 있는 종목 카드 -->
+  <div class="card-grid" id="card-grid">
+    
+        <div class="card">
+          <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="tag tag-positive">긍정</span>
+            <span class="etf-name">RISE 현대차고정피지컬AI</span>
+            <span class="count">6건</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="card-summary">기대와 의문이 공존하는 긍정적인 투자 전망</div>
+          <div class="card-detail">
+            <div class="comment" data-search="차트가 맛있는데 상승랠리 이어질꺼같은 너무바닥">
+              <div class="comment-meta">
+                <span class="badge" style="background:#03C75A">네이버</span>
+                <span class="author">럭*온</span>
+                <span class="date">2026.07.19</span> <span class="meta-stat">👁 7</span>
+              </div>
+              <div class="comment-title">차트가 맛있는데</div>
+              <div class="comment-body">상승랠리 이어질꺼같은 너무바닥</div>
+            </div>
+            <div class="comment" data-search="장기적으로  매주1개씩">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">건*******1</span>
+                <span class="date">2026.07.19</span>
+              </div>
+              
+              <div class="comment-body">장기적으로  매주1개씩</div>
+            </div>
+            <div class="comment" data-search="만원 오면 손절 치실건가요 다들">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">화********1</span>
+                <span class="date">2026.07.19</span>
+              </div>
+              
+              <div class="comment-body">만원 오면 손절 치실건가요 다들</div>
+            </div>
+            <div class="comment" data-search="2년 버티면 최소 3만">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">부********2</span>
+                <span class="date">2026.07.19</span>
+              </div>
+              
+              <div class="comment-body">2년 버티면 최소 3만</div>
+            </div>
+            <div class="comment" data-search="근데 궁금한거시 있어요  주식 오래하신분들 이런거 한 20년 들고 있으면 물가 상승에 따라 결국 조금씩 오르긴하나용..?">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">절********아</span>
+                <span class="date">2026.07.19</span>
+              </div>
+              
+              <div class="comment-body">근데 궁금한거시 있어요 <br>주식 오래하신분들 이런거 한 20년 들고 있으면<br>물가 상승에 따라 결국 조금씩 오르긴하나용..?</div>
+            </div>
+            <div class="comment" data-search="누가이기나해보자 끝까지가면 내가 다이겨">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">트*****엔</span>
+                <span class="date">2026.07.19</span>
+              </div>
+              
+              <div class="comment-body">누가이기나해보자 끝까지가면 내가 다이겨</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="tag tag-neutral">중립</span>
+            <span class="etf-name">RISE 미국AI밸류체인데일리고정커버드콜</span>
+            <span class="count">5건</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="card-summary">투자자들은 안정성과 장기적 성장에 긍정적이나, 구체적인 기간과 건강보험료 관련 우려 제기</div>
+          <div class="card-detail">
+            <div class="comment" data-search="자 월요일부터 매수해 볼까? 기다린자에게 복이 온다!!">
+              <div class="comment-meta">
+                <span class="badge" style="background:#03C75A">네이버</span>
+                <span class="author">털***싱</span>
+                <span class="date">2026.07.19</span> <span class="meta-stat">👁 40</span>
+              </div>
+              <div class="comment-title">자 월요일부터 매수해 볼까?</div>
+              <div class="comment-body">기다린자에게 복이 온다!!</div>
+            </div>
+            <div class="comment" data-search="미국 전역서 AI 데이터센터 반대 시위... 42개 주서 초당적 동시 집회 미국 전역서 AI 데이터센터 반대 시위... 42개 주서 초당적 동시 집회 미국도 중국 첩자들이 민주당 장악한건가?">
+              <div class="comment-meta">
+                <span class="badge" style="background:#03C75A">네이버</span>
+                <span class="author">r****0</span>
+                <span class="date">2026.07.19</span> <span class="meta-stat">👁 10</span>
+              </div>
+              
+              <div class="comment-body">미국 전역서 AI 데이터센터 반대 시위... 42개 주서 초당적 동시 집회<br>미국도 중국 첩자들이 민주당 장악한건가?</div>
+            </div>
+            <div class="comment" data-search="국내주식에 비해 푸근하네">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">램*롱</span>
+                <span class="date">2026.07.19</span> <span class="meta-stat">❤️ 2</span>
+              </div>
+              
+              <div class="comment-body">국내주식에 비해 푸근하네</div>
+            </div>
+            <div class="comment" data-search="언제까지에요? 연말까지는 줄까요?">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">스*팬</span>
+                <span class="date">2026.07.19</span>
+              </div>
+              
+              <div class="comment-body">언제까지에요? 연말까지는 줄까요?</div>
+            </div>
+            <div class="comment" data-search="이제 막 제대하고 투자할 준비하고 있는 주린이입니다. 다른분들처럼 저도 1만주 목표로 모아가려 하는데 혹시 이것도 건보료하고 상관없는 주식인가요? 주식고수 형님들 답 부탁드립니다 🙇‍♂️🙇‍♂️">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">옵*움</span>
+                <span class="date">2026.07.19</span>
+              </div>
+              
+              <div class="comment-body">이제 막 제대하고 투자할 준비하고 있는 주린이입니다.<br>다른분들처럼 저도 1만주 목표로 모아가려 하는데<br>혹시 이것도 건보료하고 상관없는 주식인가요?<br>주식고수 형님들 답 부탁드립니다 🙇‍♂️🙇‍♂️</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="tag tag-neutral">중립</span>
+            <span class="etf-name">RISE 미국배당100데일리고정커버드콜</span>
+            <span class="count">3건</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="card-summary">투자 계획과 꾸준한 투자 의지가 보이나, 구체적인 의견은 다양함</div>
+          <div class="card-detail">
+            <div class="comment" data-search="내가 미배커를 하는 이유 배당ETF에 대해서 공부하고 실행하기까지 한 1년 걸린거 같아요. 그안에 개별종목,테마ETF등등 하면서 그때그때 시세로 폰중독자 처럼 틈만나면 증권 어플보면서 스트레스도 받고 그랬거든요. 그러다 나이도 40대 중반 들어서면서 이대로 잘 알지도 못하는 주식 유튭,지인,동네 찌라시 등등을 믿고 계속 내돈을 소비할수없다는생각에ㅡ물론 좀 벌기는 했지만..주가 내릴때 그 스트레스는..ㅡ 좀 안정적이고 느리지만 꾸준한 수익을 주는 주식을 찾아보자는 마음에 찾아본것이 배당ETF입니다. 해당 그 중에서 미배커와 미테커를 찾고 공부하고 비교분석하고. 향후계획 세우는데까지 2달정도 걸린거같네요 근대 투자방법은 단순하더라구요.ㅋㅋ 저같은 경우는 일단 10년이상 장기 투자를 생각해서 안정성,약진이지만 우상향 그리고 짭짤한 배당금 ㅋㅋ이 세가지에 중점을 두고 이 종목들을 찾았어요. 일단 라이즈 미배커, 라이즈 미테커 두종목입니다. 1.미테커 월초배당 ㅡ 나스닥100 베이스에 연 18%이상 배당금 2.미배커 월중순배당ㅡ 슈드 베이스에 연 16%이상 배당금 3.S&amp;P500 그냥 짜투리 금액 투자. 매달 적립금(내가 넣을수있는 고정금액)을 5대5로 나눔 월초 1번 배당금+적립금 으로 2번을 삽니다. 월중순 2번 배당금+적립금 으로 1번을 삽니다. 그리고 쓰다 남은 용돈으로 3번을 삽니다.월급 전날에 ㅋㅋ 이 짓을 계속 반복하려구요. gtp로 계산해보니 이런식으로 적립하다보면 하락장에서의 평단가는 시세와 비슷해진다고 하네요. 그리고 미배커는 슈드. 즉 SCHD 미국 배당유량주를 모티브로 거의 비슷하게 만든 상품이라 선택했구요 우상향 하긴">
+              <div class="comment-meta">
+                <span class="badge" style="background:#03C75A">네이버</span>
+                <span class="author">이*******야</span>
+                <span class="date">2026.07.19</span> <span class="meta-stat">❤️ 3</span> <span class="meta-stat">👁 55</span>
+              </div>
+              <div class="comment-title">내가 미배커를 하는 이유</div>
+              <div class="comment-body">배당ETF에 대해서 공부하고 실행하기까지 한 1년 걸린거 같아요.<br>그안에 개별종목,테마ETF등등 하면서 그때그때 시세로 폰중독자 처럼<br>틈만나면 증권 어플보면서 스트레스도 받고 그랬거든요.<br>그러다 나이도 40대 중반 들어서면서 이대로 잘 알지도 못하는 주식<br>유튭,지인,동네 찌라시 등등을 믿고 계속 내돈을 소비할수없다는생각에ㅡ물론 좀 벌기는 했지만..주가 내릴때 그 스트레스는..ㅡ 좀 안정적이고 느리지만 꾸준한 수익을 주는 주식을 찾아보자는<br>마음에 찾아본것이 배당ETF입니다. 해당 그 중에서 미배커와 미테커를 찾고 공부하고 비교분석하고. 향후계획 세우는데까지 2달정도 걸린거같네요 근대 투자방법은 단순하더라구요.ㅋㅋ<br>저같은 경우는 일단 10년이상 장기 투자를 생각해서 안정성,약진이지만 우상향 그리고<br>짭짤한 배당금 ㅋㅋ이 세가지에 중점을 두고 이 종목들을 찾았어요.<br>일단 라이즈 미배커, 라이즈 미테커 두종목입니다.<br>1.미테커 월초배당 ㅡ 나스닥100 베이스에 연 18%이상 배당금<br>2.미배커 월중순배당ㅡ 슈드 베이스에 연 16%이상 배당금<br>3.S&amp;P500 그냥 짜투리 금액 투자.<br>매달 적립금(내가 넣을수있는 고정금액)을 5대5로 나눔<br>월초 1번 배당금+적립금 으로 2번을 삽니다.<br>월중순 2번 배당금+적립금 으로 1번을 삽니다.<br>그리고 쓰다 남은 용돈으로 3번을 삽니다.월급 전날에 ㅋㅋ<br>이 짓을 계속 반복하려구요. gtp로 계산해보니 이런식으로<br>적립하다보면 하락장에서의 평단가는 시세와 비슷해진다고 하네요.<br>그리고 미배커는 슈드. 즉 SCHD 미국 배당유량주를 모티브로 거의 비슷하게<br>만든 상품이라 선택했구요 우상향 하긴 </div>
+            </div>
+            <div class="comment" data-search="안정적인 월배당 안녕하세요 내일부터 isa계좌에 5년 동안 1억 모을 예정 입니다 매일 10만원 정도 매수해서 5년동안 1억 모으면 괜찮을까요? 세금도 궁금합니다 고수분들 조언 부탁드립니다.">
+              <div class="comment-meta">
+                <span class="badge" style="background:#03C75A">네이버</span>
+                <span class="author">월**********다</span>
+                <span class="date">2026.07.19</span> <span class="meta-stat">👁 26</span>
+              </div>
+              <div class="comment-title">안정적인 월배당</div>
+              <div class="comment-body">안녕하세요 내일부터 isa계좌에 5년 동안 1억 모을 예정 입니다 매일 10만원 정도 매수해서 5년동안 1억 모으면 괜찮을까요? 세금도 궁금합니다 고수분들 조언 부탁드립니다.</div>
+            </div>
+            <div class="comment" data-search="달에 30~50만 정도씩 꾸준히 모으려 합니다.">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">아***다</span>
+                <span class="date">2026.07.19</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">달에 30~50만 정도씩 꾸준히 모으려 합니다.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="tag tag-neutral">중립</span>
+            <span class="etf-name">RISE 미국테크100데일리고정커버드콜</span>
+            <span class="count">2건</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="card-summary">높은 배당률과 장기 투자 우려 제기</div>
+          <div class="card-detail">
+            <div class="comment" data-search="이거 배당률 왜이렇게 높죠?">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">익**니</span>
+                <span class="date">2026.07.19</span> <span class="meta-stat">❤️ 2</span>
+              </div>
+              
+              <div class="comment-body">이거 배당률 왜이렇게 높죠?</div>
+            </div>
+            <div class="comment" data-search="형님들 이런 대형 커버드콜 상품들이 상폐청산 당할수도있나요?? 10년동안 월230씩 박을려고하는데요">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">7*****S</span>
+                <span class="date">2026.07.19</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">형님들 이런 대형 커버드콜 상품들이 상폐청산 당할수도있나요??<br>10년동안 월230씩 박을려고하는데요</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="tag tag-negative">부정</span>
+            <span class="etf-name">RISE 버크셔포트폴리오TOP10</span>
+            <span class="count">2건</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="card-summary">투자자들은 시가총액과 거래량에 대한 우려와 괴리율 문제를 제기</div>
+          <div class="card-detail">
+            <div class="comment" data-search="이거 시가총액 700억임 발행주식수는 450만주  보통 시가총액 50~100억에서 놀면 상장 폐지임    안정빵은 1천억원 넘어가야 안정빵임  700억이면 어정쩡한 금액임 이거 하루에 얼마씩 거래 되나 보니까는. 1~8억 사이임  아침 lp들이  물량 받아주긴 해서   개인들 1억 미만들은 그래도 문제없이 받아주긴 할껀데  문제는 1억이상 산사람들 그리고  시가총액 안올라가서 자꾸 빠지거나 접근선 떨어져가지고 사람들 안들어온다 그러면 그때부터 문제가 생기는거임  저런식으로 빠지다보면 괴리율 자꾸 높아져서  실제 버크셔가 가지고 있는 종목이랑 5~10퍼센트 플러스 마이나스 생기는거랑 상장폐지 되면   돈이랑 이익금은 다돌려주는데  수익이 2천넘어간다 그러면 돌려받을때 여러가지 종합세 할증 붙어서 세금 45프로까지 뚜들어 맞음 건보료 엄청 올라가고 그래서 Etf로 수익 만이나면 1년마다 쪼굼식 팔아서 15.4프로만 내고 조정하는거지  잘생각 해보시고 사시길">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">종****수</span>
+                <span class="date">2026.07.19</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">이거 시가총액 700억임 발행주식수는 450만주<br><br>보통 시가총액 50~100억에서 놀면 상장 폐지임  <br><br>안정빵은 1천억원 넘어가야 안정빵임<br><br>700억이면 어정쩡한 금액임<br>이거 하루에 얼마씩 거래 되나 보니까는. 1~8억 사이임<br><br>아침 lp들이  물량 받아주긴 해서  <br>개인들 1억 미만들은 그래도 문제없이 받아주긴 할껀데 <br>문제는 1억이상 산사람들 그리고<br><br>시가총액 안올라가서 자꾸 빠지거나 접근선 떨어져가지고 사람들 안들어온다 그러면 그때부터 문제가 생기는거임  저런식으로 빠지다보면<br>괴리율 자꾸 높아져서  실제 버크셔가 가지고 있는 종목이랑 5~10퍼센트 플러스 마이나스 생기는거랑 상장폐지 되면 <br><br>돈이랑 이익금은 다돌려주는데<br><br>수익이 2천넘어간다 그러면 돌려받을때 여러가지 종합세 할증 붙어서 세금 45프로까지 뚜들어 맞음 건보료 엄청 올라가고 그래서<br>Etf로 수익 만이나면 1년마다 쪼굼식 팔아서 15.4프로만 내고 조정하는거지<br><br>잘생각 해보시고 사시길</div>
+            </div>
+            <div class="comment" data-search="괴리율 개심하네 ㅡ">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">아**잉</span>
+                <span class="date">2026.07.19</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">괴리율 개심하네 ㅡ</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="tag tag-neutral">중립</span>
+            <span class="etf-name">RISE SK하이닉스단일종목레버리지</span>
+            <span class="count">1건</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="card-summary">주린이 투자자들이 레버리지 투자에 대한 조언을 요청하며 관심 보임</div>
+          <div class="card-detail">
+            <div class="comment" data-search="강성주주님들 레버레지 월요이날 몰빵준비중인데 주린이인데 물린가격대 알려주세요 강성주주님들 레버레지 월요이날 몰빵준비중인데 주린이인데 물린가격대 알려주세요">
+              <div class="comment-meta">
+                <span class="badge" style="background:#03C75A">네이버</span>
+                <span class="author">주*스</span>
+                <span class="date">2026.07.19</span> <span class="meta-stat">👁 4</span>
+              </div>
+              
+              <div class="comment-body">강성주주님들 레버레지 월요이날 몰빵준비중인데 주린이인데 물린가격대 알려주세요</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="tag tag-neutral">중립</span>
+            <span class="etf-name">RISE AI전력인프라</span>
+            <span class="count">1건</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="card-summary">정보 요청만 있어 구체적인 긍정/부정 반응 없음</div>
+          <div class="card-detail">
+            <div class="comment" data-search="다들 얼마에 시작 하셨는지요? 궁금합니다">
+              <div class="comment-meta">
+                <span class="badge" style="background:#03C75A">네이버</span>
+                <span class="author">초**민</span>
+                <span class="date">2026.07.19</span> <span class="meta-stat">👁 6</span>
+              </div>
+              <div class="comment-title">다들 얼마에 시작 하셨는지요?</div>
+              <div class="comment-body">궁금합니다</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="tag tag-neutral">중립</span>
+            <span class="etf-name">RISE 코리아밸류업위클리고정커버드콜</span>
+            <span class="count">1건</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="card-summary">혼합된 의견, 구체적 성과 언급 부족</div>
+          <div class="card-detail">
+            <div class="comment" data-search="과연?">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">절****아</span>
+                <span class="date">2026.07.19</span> <span class="meta-stat">❤️ 2</span>
+              </div>
+              
+              <div class="comment-body">과연?</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="tag tag-neutral">중립</span>
+            <span class="etf-name">RISE AI&로봇</span>
+            <span class="count">1건</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="card-summary">제한적인 댓글로 구체적인 투자 분위기 파악 어려움</div>
+          <div class="card-detail">
+            <div class="comment" data-search="태초마을이네">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">주****다</span>
+                <span class="date">2026.07.19</span>
+              </div>
+              
+              <div class="comment-body">태초마을이네</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="tag tag-negative">부정</span>
+            <span class="etf-name">RISE 글로벌자산배분액티브</span>
+            <span class="count">1건</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="card-summary">투자자들 배당 지연에 실망감 표출</div>
+          <div class="card-detail">
+            <div class="comment" data-search="배당 언제 줘… 흑흑">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">유******독</span>
+                <span class="date">2026.07.19</span>
+              </div>
+              
+              <div class="comment-body">배당 언제 줘… 흑흑</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="tag tag-negative">부정</span>
+            <span class="etf-name">RISE 동학개미</span>
+            <span class="count">1건</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="card-summary">투자자들 사이에서 조기 상폐 우려 제기</div>
+          <div class="card-detail">
+            <div class="comment" data-search="이러다 나온지 1년도 안돼서 상폐되겠어">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">미***빠</span>
+                <span class="date">2026.07.19</span>
+              </div>
+              
+              <div class="comment-body">이러다 나온지 1년도 안돼서 상폐되겠어</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="tag tag-neutral">중립</span>
+            <span class="etf-name">RISE 배터리 리사이클링</span>
+            <span class="count">1건</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="card-summary">중립적 반응, 주로 저평가 주식 언급</div>
+          <div class="card-detail">
+            <div class="comment" data-search="그냥 저냥 저평가 큰 주식들">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">모***달</span>
+                <span class="date">2026.07.19</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">그냥 저냥 저평가 큰 주식들</div>
+            </div>
+          </div>
+        </div>
+  </div>
+  <div class="no-results" id="no-results" style="display:none">검색 결과가 없습니다.</div>
+
+</div>
+<script>
+(function() {
+  const input = document.getElementById('search-input');
+  const cards = Array.from(document.querySelectorAll('.card'));
+  const totalLine = document.getElementById('total-line');
+  const noResults = document.getElementById('no-results');
+  const originalTotal = totalLine.textContent;
+
+  document.querySelectorAll('.comment-title, .comment-body').forEach(el => {
+    el.dataset.orig = el.innerHTML;
+  });
+
+  function escapeReg(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+  function highlight(el, term) {
+    if (!el) return;
+    const orig = el.dataset.orig || '';
+    if (!term) { el.innerHTML = orig; return; }
+    const ph = '@@RISE_BR_SENTINEL@@';
+    const safe = orig.replace(/<br\s*\/?>/gi, ph);
+    const re = new RegExp(escapeReg(term), 'gi');
+    el.innerHTML = safe.replace(re, m => '<mark>' + m + '</mark>').replace(new RegExp(ph, 'g'), '<br>');
+  }
+
+  function runSearch() {
+    const term = input.value.trim();
+    if (!term) {
+      cards.forEach(card => {
+        card.style.display = '';
+        card.classList.remove('open');
+        card.querySelectorAll('.comment').forEach(c => {
+          c.style.display = '';
+          highlight(c.querySelector('.comment-title'), '');
+          highlight(c.querySelector('.comment-body'), '');
+        });
+      });
+      totalLine.textContent = originalTotal;
+      noResults.style.display = 'none';
+      return;
+    }
+    const termLower = term.toLowerCase();
+    let matchedCards = 0, matchedComments = 0;
+    cards.forEach(card => {
+      let cardMatched = false, cnt = 0;
+      card.querySelectorAll('.comment').forEach(c => {
+        const data = (c.dataset.search || '').toLowerCase();
+        if (data.includes(termLower)) {
+          c.style.display = '';
+          cardMatched = true;
+          cnt++;
+          highlight(c.querySelector('.comment-title'), term);
+          highlight(c.querySelector('.comment-body'), term);
+        } else {
+          c.style.display = 'none';
+        }
+      });
+      if (cardMatched) {
+        card.style.display = '';
+        card.classList.add('open');
+        matchedCards++;
+        matchedComments += cnt;
+      } else {
+        card.style.display = 'none';
+        card.classList.remove('open');
+      }
+    });
+    totalLine.textContent = '🔍 "' + term + '" 검색결과: ' + matchedCards + '종목 ' + matchedComments + '건';
+    noResults.style.display = matchedCards === 0 ? 'block' : 'none';
+  }
+
+  let t;
+  input.addEventListener('input', () => {
+    clearTimeout(t);
+    t = setTimeout(runSearch, 120);
+  });
+  input.addEventListener('search', runSearch);
+})();
+</script>
+</body>
+</html>
