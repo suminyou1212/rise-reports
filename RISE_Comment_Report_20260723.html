@@ -98,7 +98,7 @@ mark { background:#FFF59D; color:inherit; padding:0 2px; border-radius:3px; font
 
   <!-- 2) 검색바 -->
   <div class="search-bar">
-    <input type="search" id="search-input" class="search-input" placeholder="댓글 제목·본문 검색 (예: 배당, 수익률, 괴리율, 종목…)" autocomplete="off">
+    <input type="search" id="search-input" class="search-input" placeholder="종목명·댓글 제목·본문 검색 (예: 미국배당, 수익률, 괴리율…)" autocomplete="off">
     <span class="search-icon">🔍</span>
   </div>
 
@@ -2098,7 +2098,7 @@ mark { background:#FFF59D; color:inherit; padding:0 2px; border-radius:3px; font
   const noResults = document.getElementById('no-results');
   const originalTotal = totalLine.textContent;
 
-  document.querySelectorAll('.comment-title, .comment-body').forEach(el => {
+  document.querySelectorAll('.comment-title, .comment-body, .etf-name').forEach(el => {
     el.dataset.orig = el.innerHTML;
   });
 
@@ -2120,6 +2120,7 @@ mark { background:#FFF59D; color:inherit; padding:0 2px; border-radius:3px; font
       cards.forEach(card => {
         card.style.display = '';
         card.classList.remove('open');
+        highlight(card.querySelector('.etf-name'), '');
         card.querySelectorAll('.comment').forEach(c => {
           c.style.display = '';
           highlight(c.querySelector('.comment-title'), '');
@@ -2133,15 +2134,19 @@ mark { background:#FFF59D; color:inherit; padding:0 2px; border-radius:3px; font
     const termLower = term.toLowerCase();
     let matchedCards = 0, matchedComments = 0;
     cards.forEach(card => {
-      let cardMatched = false, cnt = 0;
+      const nameEl = card.querySelector('.etf-name');
+      const nameMatched = ((nameEl && nameEl.dataset.orig) || '').toLowerCase().includes(termLower);
+      let cardMatched = nameMatched, cnt = 0;
+      highlight(nameEl, nameMatched ? term : '');
       card.querySelectorAll('.comment').forEach(c => {
         const data = (c.dataset.search || '').toLowerCase();
-        if (data.includes(termLower)) {
+        const commentMatched = data.includes(termLower);
+        if (commentMatched || nameMatched) {
           c.style.display = '';
-          cardMatched = true;
           cnt++;
-          highlight(c.querySelector('.comment-title'), term);
-          highlight(c.querySelector('.comment-body'), term);
+          if (commentMatched) cardMatched = true;
+          highlight(c.querySelector('.comment-title'), commentMatched ? term : '');
+          highlight(c.querySelector('.comment-body'), commentMatched ? term : '');
         } else {
           c.style.display = 'none';
         }
