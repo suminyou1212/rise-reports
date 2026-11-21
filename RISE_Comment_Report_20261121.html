@@ -1,0 +1,1559 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>네이버 X 토스 RISE ETF 일일 댓글 현황 (2026.11.21)</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Pretendard',sans-serif; background:linear-gradient(135deg,#F4F7F9 0%,#E8EEF3 100%); color:#2C3E50; padding:30px 20px; line-height:1.5; }
+.container { max-width:1200px; margin:0 auto; }
+
+/* 상단 히어로 */
+.hero { background:#E1BEE7; color:#1A2E45; padding:18px 22px; border-radius:14px; margin-bottom:10px; box-shadow:0 4px 20px rgba(0,0,0,0.08); display:flex; justify-content:space-between; align-items:center; gap:16px; }
+.hero-left { display:flex; flex-direction:column; gap:10px; min-width:0; }
+.hero-title { font-size:22px; font-weight:900; letter-spacing:-0.6px; color:#1A2E45; line-height:1.2; }
+.hero-meta { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.hero-date { font-size:14px; font-weight:700; color:#1A2E45; opacity:0.85; }
+.hero-dept { font-size:12px; font-weight:800; color:#1A2E45; background:#FFBC00; padding:4px 12px; border-radius:20px; letter-spacing:-0.3px; }
+.hero-stats { display:flex; flex-direction:column; gap:8px; flex-shrink:0; }
+.hero-stat { font-size:13px; font-weight:800; padding:6px 14px; border-radius:20px; color:#fff; white-space:nowrap; text-align:center; min-width:96px; }
+.hero-stat.naver { background:#03C75A; }
+.hero-stat.toss { background:#0064FF; }
+.total-line { text-align:right; font-size:13px; font-weight:700; color:#1A2E45; margin-bottom:14px; padding-right:4px; }
+
+/* 카드 그리드 */
+.card-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(320px,1fr)); gap:14px; margin-bottom:20px; }
+.card { background:#fff; border-radius:10px; overflow:hidden; border-top:5px solid #8E24AA; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+.card-header { display:flex; align-items:center; padding:14px 16px; cursor:pointer; gap:10px; }
+.card-header:hover { background:#FAFAFA; }
+.tag { font-size:11px; font-weight:700; padding:2px 8px; border-radius:4px; flex-shrink:0; white-space:nowrap; }
+.tag-positive { background:#E8F5E9; color:#2E7D32; }
+.tag-negative { background:#FFEBEE; color:#C62828; }
+.tag-neutral { background:#F5F5F5; color:#757575; }
+.etf-name { flex:1; font-weight:600; font-size:14px; }
+.count { font-size:12px; color:#666; white-space:nowrap; }
+.arrow { font-size:10px; color:#999; transition:transform .2s; }
+.card.open .arrow { transform:rotate(180deg); }
+.card-summary { padding:0 16px 12px; font-size:13px; color:#555; }
+.card-detail { display:none; padding:0 16px 16px; border-top:1px solid #EEE; }
+.card.open .card-detail { display:block; }
+
+/* 댓글 */
+.comment { padding:10px 0; border-bottom:1px solid #F0F0F0; }
+.comment:last-child { border-bottom:none; }
+.comment-meta { display:flex; align-items:center; gap:8px; margin-bottom:4px; flex-wrap:wrap; }
+.badge { color:#fff; font-size:11px; padding:2px 7px; border-radius:4px; font-weight:500; }
+.author { font-size:12px; color:#333; font-weight:600; }
+.date { font-size:11px; color:#999; }
+.meta-stat { font-size:11px; color:#888; }
+.comment-title { font-size:13px; font-weight:700; color:#1A2E45; margin-bottom:2px; word-break:break-word; }
+.comment-body { font-size:13px; color:#444; word-break:break-word; }
+.more-note { text-align:center; padding:10px; font-size:12px; color:#999; }
+
+/* 검색바 */
+.search-bar { margin-bottom:14px; position:relative; }
+.search-input { width:100%; padding:12px 44px 12px 16px; border:2px solid #E0E6EB; border-radius:10px; font-size:14px; font-family:inherit; background:#fff; outline:none; transition:border-color .15s; -webkit-appearance:none; }
+.search-input:focus { border-color:#8E24AA; }
+.search-icon { position:absolute; right:16px; top:50%; transform:translateY(-50%); font-size:16px; color:#999; pointer-events:none; }
+mark { background:#FFF59D; color:inherit; padding:0 2px; border-radius:3px; font-weight:700; }
+.no-results { text-align:center; padding:40px 20px; color:#999; font-size:14px; background:#fff; border-radius:10px; }
+
+/* 반응형 */
+@media (max-width:600px) {
+  body { padding:12px 8px; }
+  .hero { padding:14px 16px; gap:10px; }
+  .hero-title { font-size:16px; }
+  .hero-date { font-size:12px; }
+  .hero-dept { font-size:10px; padding:3px 9px; }
+  .hero-stat { font-size:11px; padding:5px 10px; min-width:78px; }
+  .total-line { font-size:11px; }
+  .search-input { padding:10px 38px 10px 14px; font-size:13px; }
+  .card-grid { grid-template-columns:1fr; gap:10px; }
+  .card-header { padding:12px 14px; }
+  .etf-name { font-size:13px; }
+  .comment-body { font-size:12px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- 1) 히어로 -->
+  <div class="hero">
+    <div class="hero-left">
+      <div class="hero-title">RISE ETF 일일 댓글 현황</div>
+      <div class="hero-meta">
+        <span class="hero-date">2026.11.21 (토)</span>
+        <span class="hero-dept">디지털마케팅본부</span>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <span class="hero-stat naver">네이버 8건</span>
+      <span class="hero-stat toss">토스 130건</span>
+    </div>
+  </div>
+
+  <div class="total-line" id="total-line">총 11종목 138건</div>
+
+  <!-- 2) 검색바 -->
+  <div class="search-bar">
+    <input type="search" id="search-input" class="search-input" placeholder="종목명·댓글 제목·본문 검색 (예: 미국배당, 수익률, 괴리율…)" autocomplete="off">
+    <span class="search-icon">🔍</span>
+  </div>
+
+  <!-- 3) 댓글 있는 종목 카드 -->
+  <div class="card-grid" id="card-grid">
+    
+        <div class="card">
+          <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="tag tag-neutral">중립</span>
+            <span class="etf-name">RISE 코리아밸류업위클리고정커버드콜</span>
+            <span class="count">59건</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="card-summary">투자자들 사이에서 하락에 대한 우려와 장기적 매수 의견이 혼재된 반응 보임</div>
+          <div class="card-detail">
+            <div class="comment" data-search="애도 앞으로 계속 떨어질거임 어떤것도 살아남지 못함">
+              <div class="comment-meta">
+                <span class="badge" style="background:#03C75A">네이버</span>
+                <span class="author">근*</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">👁 48</span>
+              </div>
+              <div class="comment-title">애도 앞으로 계속 떨어질거임</div>
+              <div class="comment-body">어떤것도 살아남지 못함</div>
+            </div>
+            <div class="comment" data-search="11000원대 오면 맛 좋겠는데 주식은 현금이 실력">
+              <div class="comment-meta">
+                <span class="badge" style="background:#03C75A">네이버</span>
+                <span class="author">신*다</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">👁 11</span>
+              </div>
+              <div class="comment-title">11000원대 오면</div>
+              <div class="comment-body">맛 좋겠는데 주식은 현금이 실력</div>
+            </div>
+            <div class="comment" data-search="오늘의 나는 드디어 바라던 만주의 목표를 채웠다 내일의 나는 좀더 나은 생활을 할 수 있겠지 그동안 감사 했습니다 대들보을 만들어 놓았으닌 가지 차기을 해야지 다른 주식 창에서 또 봐요">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">스***아</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 34</span>
+              </div>
+              
+              <div class="comment-body">오늘의 나는 드디어 바라던 만주의 목표를 채웠다<br>내일의 나는 좀더 나은 생활을 할 수 있겠지<br>그동안 감사 했습니다<br>대들보을 만들어 놓았으닌 가지 차기을 해야지<br>다른 주식 창에서 또 봐요</div>
+            </div>
+            <div class="comment" data-search="어제 나스닥이 하루 -5%라는 큰 폭락을 했다. 월요일 코스피도 한번더 진통을 겪을것이다.  사실 코스피의 변동성으로 여간 신경이 많이 쓰이는게 아니다. 현재 고점대비 -50% 폭락상태인데도 계속 하락하고 있다.  하지만, 은퇴자 입장에서, 코스피 커버드콜을 배제할수 없는것은 익히 알다시피 비과세와 고분배금이다. 나의 진입시점도 그리 빠르지는 않아서, PR기준 Kodex200타겟커버드콜은 -30%, Rise코리아밸류커버드콜은 -18%인데, 주가를 놓고 보면 코스피에 신뢰가 가지 않는 측면은 있다.  그런데, 평단 분배율을 한번 보자.  이렇게 주가 손실이 큰데도, 평단분배율은  Kodex200타겟커버드콜은 15.21%, Rise코리아밸류커버드콜은 36.74%로서 아직 QQQ기반 커버드콜에 비해 상당히 높은 수치이다.  TR 관점으로 접근해야 하는 자산증식투자자와 은퇴자의 접근은 다르다. 은퇴자는 주가가 낮거나 높아지며 변동성이 클때, 분배금의 크기가 더 현실적으로 다가 온다. 이렇게 기초자산(코스피)이 폭락해도, 평단분배율 자체는 나스닥에 비해 경쟁력이 있다고 할수 있다. 물론 추가 폭락이 이루어지면 조금더 떨어지겠지만, 나스닥에 비해서는 높은 수치이다. 그리고, 이후 회복구간에 접어들면 다시 높은 평단분배율로 회복할것이다.  은퇴자는 주가의 등락은 장기적인 관점에서 우호적인지(우상향)만 신경쓰고, 단기적인 급락,폭락구간에는 내 포트폴리오의 분배금이 얼마나 경쟁력이 있는지를 신경써야 한다.  결국 장기적으로는 기초자산은 회복할것이고, 단기적인 폭락구간에 분배금의 급락이 직접적인 해결과제인것이다.  그러한 관점으로  Kodex200타겟커버드콜, Rise코리아밸류커버드콜의 비중을 늘려왔고, 최소한 내 포트폴리오에서 이 상품들은 제 역할을 잘 수행하고 있다고 볼수 있다.  즉, 각자 역할이 다른것이다. 나스닥 커버드콜은 당장의 분배금보다는 기초자산의 우위에 따른 TR 전체적인 우상향을 바라보는 것이고, 코스피 커버드콜은 비과세를 필두로 이렇게 폭락구간에서도 높은 분배금으로 현재의 인출에 많은 도움을 주는 것이다.  다시 말하지만,이 글은 자산증식투자의 관점이 아닌 은퇴자의 인출 vs 분배금유지의 관점으로 분석한 게시글이다.  [추신] 은퇴자 포트폴리오 관점에서,  셀프 스터디,동기부여를 위한 일기이므로, 거슬리거나 번거로운분은 굳이 댓글 달지 말고, 차단하시기 바랍니다.  안보면 됩니다.  투자 권유가 아닌 개인적인 인사이트입니다.  또한, 언급된 자료는 개인적으로 추출한 자료이므로 이에 대해 책임지지 않습니다.">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">S********a</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 22</span>
+              </div>
+              
+              <div class="comment-body">어제 나스닥이 하루 -5%라는 큰 폭락을 했다.<br>월요일 코스피도 한번더 진통을 겪을것이다.<br><br>사실 코스피의 변동성으로 여간 신경이 많이 쓰이는게 아니다.<br>현재 고점대비 -50% 폭락상태인데도 계속 하락하고 있다.<br><br>하지만, 은퇴자 입장에서, 코스피 커버드콜을 배제할수 없는것은 익히 알다시피 비과세와 고분배금이다.<br>나의 진입시점도 그리 빠르지는 않아서, PR기준 Kodex200타겟커버드콜은 -30%, Rise코리아밸류커버드콜은 -18%인데, 주가를 놓고 보면 코스피에 신뢰가 가지 않는 측면은 있다.<br><br>그런데, 평단 분배율을 한번 보자. <br>이렇게 주가 손실이 큰데도, 평단분배율은  Kodex200타겟커버드콜은 15.21%, Rise코리아밸류커버드콜은 36.74%로서 아직 QQQ기반 커버드콜에 비해 상당히 높은 수치이다.<br><br>TR 관점으로 접근해야 하는 자산증식투자자와 은퇴자의 접근은 다르다.<br>은퇴자는 주가가 낮거나 높아지며 변동성이 클때, 분배금의 크기가 더 현실적으로 다가 온다.<br>이렇게 기초자산(코스피)이 폭락해도, 평단분배율 자체는 나스닥에 비해 경쟁력이 있다고 할수 있다.<br>물론 추가 폭락이 이루어지면 조금더 떨어지겠지만, 나스닥에 비해서는 높은 수치이다.<br>그리고, 이후 회복구간에 접어들면 다시 높은 평단분배율로 회복할것이다.<br><br>은퇴자는 주가의 등락은 장기적인 관점에서 우호적인지(우상향)만 신경쓰고, 단기적인 급락,폭락구간에는 내 포트폴리오의 분배금이 얼마나 경쟁력이 있는지를 신경써야 한다. <br>결국 장기적으로는 기초자산은 회복할것이고, 단기적인 폭락구간에 분배금의 급락이 직접적인 해결과제인것이다.<br><br>그러한 관점으로  Kodex200타겟커버드콜, Rise코리아밸류커버드콜의 비중을 늘려왔고, 최소한 내 포트폴리오에서 이 상품들은 제 역할을 잘 수행하고 있다고 볼수 있다. <br>즉, 각자 역할이 다른것이다.<br>나스닥 커버드콜은 당장의 분배금보다는 기초자산의 우위에 따른 TR 전체적인 우상향을 바라보는 것이고, 코스피 커버드콜은 비과세를 필두로 이렇게 폭락구간에서도 높은 분배금으로 현재의 인출에 많은 도움을 주는 것이다.<br><br>다시 말하지만,이 글은 자산증식투자의 관점이 아닌 은퇴자의 인출 vs 분배금유지의 관점으로 분석한 게시글이다.<br><br>[추신]<br>은퇴자 포트폴리오 관점에서,  셀프 스터디,동기부여를 위한 일기이므로, 거슬리거나 번거로운분은 굳이 댓글 달지 말고, 차단하시기 바랍니다. <br>안보면 됩니다. <br>투자 권유가 아닌 개인적인 인사이트입니다. <br>또한, 언급된 자료는 개인적으로 추출한 자료이므로 이에 대해 책임지지 않습니다.</div>
+            </div>
+            <div class="comment" data-search="1주씩 모아가고도잇습니다..">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">특*****6</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 12</span>
+              </div>
+              
+              <div class="comment-body">1주씩 모아가고도잇습니다..</div>
+            </div>
+            <div class="comment" data-search="주식장 보면 대한민국은 무정부 상태로 보인다.  부동산 시장에는 죽자고 개입하면서 주식시장은 시장개입한다고 할까봐 개입 안한다고?  대체 정부는 뭐하고 자빠졌냐!">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">O*****y</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 12</span>
+              </div>
+              
+              <div class="comment-body">주식장 보면 대한민국은 무정부 상태로 보인다.<br><br>부동산 시장에는 죽자고 개입하면서 주식시장은 시장개입한다고 할까봐 개입 안한다고?<br><br>대체 정부는 뭐하고 자빠졌냐!</div>
+            </div>
+            <div class="comment" data-search="사람이 참 간사하네요.. 14,000원까지 떨어질 때 싸다고 매일 분할매수 했는데 12,000원이 되니 더떨어질 것 같아 매수가 멈춰지네여 ㅎㅎ 이제 미장에만 투자하지만 미장이나 국장이나 지옥인건 같네요…">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">배**루</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 9</span>
+              </div>
+              
+              <div class="comment-body">사람이 참 간사하네요.. 14,000원까지 떨어질 때 싸다고 매일 분할매수 했는데 12,000원이 되니 더떨어질 것 같아 매수가 멈춰지네여 ㅎㅎ 이제 미장에만 투자하지만 미장이나 국장이나 지옥인건 같네요…</div>
+            </div>
+            <div class="comment" data-search="조금씩 조금씩 사서 모으고있습니다. 개별주는 매수를 멈췄고 지수투자한다 치고 매달 분배금 받으니까 가격만 떨어지면 사서 모읍니다. 우리는 최저점을 알수가 없습니다. 그냥 떨어졌다 싶으면 조금씩 모으세요. 분배금을 받으니까 그래도 오래 유지할수있네요.">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">놀**오</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 6</span>
+              </div>
+              
+              <div class="comment-body">조금씩 조금씩 사서 모으고있습니다.<br>개별주는 매수를 멈췄고 지수투자한다 치고 매달 분배금 받으니까 가격만 떨어지면 사서 모읍니다.<br>우리는 최저점을 알수가 없습니다.<br>그냥 떨어졌다 싶으면 조금씩 모으세요.<br>분배금을 받으니까 그래도 오래 유지할수있네요.</div>
+            </div>
+            <div class="comment" data-search="결국 코스피 5천도 무너졌네  흠... 어찌될런지 ... 그렇지만 딱히 할수있는건 없다 시드도 바닥났고  이제  배당들어오면 꾸준히 줍줍해서 수량이나 모아야지">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">배*********지</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 6</span>
+              </div>
+              
+              <div class="comment-body">결국 코스피 5천도 무너졌네 <br>흠... 어찌될런지 ...<br>그렇지만 딱히 할수있는건 없다<br>시드도 바닥났고  이제  배당들어오면 꾸준히 줍줍해서 수량이나 모아야지</div>
+            </div>
+            <div class="comment" data-search="아마9월까지 모으신분들은 저랑 비슷하실겁니다  어떻게하실건가요ㅠ  배당받은거제외 3000정도 손실이네요">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">9***왕</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 5</span>
+              </div>
+              
+              <div class="comment-body">아마9월까지 모으신분들은 저랑 비슷하실겁니다 <br>어떻게하실건가요ㅠ<br><br>배당받은거제외 3000정도 손실이네요</div>
+            </div>
+            <div class="comment" data-search="배당 풍차돌리기 기법  * 준비물  나스닥(코스피) 기반 커버드콜, schd 기반 커버드콜, 금융주 관련 커버드콜  -&gt; 본인은 4가지(코리아밸류업, 나스닥(ai집중), 금융고배당, schd) 커버드콜로 진행 중  * 투자 방법  (매월 분배금 + 월급) ÷ 20 거래일 = 일일투자액 설정 후 장 중 하락 분이 큰 순서로 비중 설정하여 줍기  * 장점  1. 매도 타이밍 신경쓰지 않고 걍 모아가면 됨 (성장주 위주로 매수시 매도 타이밍이 중요함)  2. 3세대 커버드콜의 경우 상승분의 일정부분만 참여가 제한되기 때문에 상승장에서 본주보다 미약할 수 있으나 거의 잘 따라감  3. 횡보, 하락 장세에서는 본주보다 퍼포먼스 좋음  * 금일(11/20) 취해야 할 action  나스닥 하락분이 가장 크기 때문에 비중 제일 많이 설정 -&gt; 그 다음으로 코리아 밸류업 커버드콜 -&gt; 그 다음 schd 기반 커버드콜 (금융 고배당 기반 커버드콜은 금일 상승했기 때문에 투자 x  대충 나스닥 커버드콜 5 : 코밸 커버드콜 3 : shcd 커버드콜 2 비중으로 주으면 됨  다들 성투하세요~!">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">배******기</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 5</span>
+              </div>
+              
+              <div class="comment-body">배당 풍차돌리기 기법<br><br>* 준비물<br><br>나스닥(코스피) 기반 커버드콜, schd 기반 커버드콜, 금융주 관련 커버드콜 <br>-&gt; 본인은 4가지(코리아밸류업, 나스닥(ai집중), 금융고배당, schd) 커버드콜로 진행 중<br><br>* 투자 방법<br><br>(매월 분배금 + 월급) ÷ 20 거래일 = 일일투자액 설정 후 장 중 하락 분이 큰 순서로 비중 설정하여 줍기<br><br>* 장점<br><br>1. 매도 타이밍 신경쓰지 않고 걍 모아가면 됨 (성장주 위주로 매수시 매도 타이밍이 중요함)<br><br>2. 3세대 커버드콜의 경우 상승분의 일정부분만 참여가 제한되기 때문에 상승장에서 본주보다 미약할 수 있으나 거의 잘 따라감<br><br>3. 횡보, 하락 장세에서는 본주보다 퍼포먼스 좋음<br><br>* 금일(11/20) 취해야 할 action<br><br>나스닥 하락분이 가장 크기 때문에 비중 제일 많이 설정 -&gt; 그 다음으로 코리아 밸류업 커버드콜 -&gt; 그 다음 schd 기반 커버드콜 (금융 고배당 기반 커버드콜은 금일 상승했기 때문에 투자 x<br><br>대충 나스닥 커버드콜 5 : 코밸 커버드콜 3 : shcd 커버드콜 2 비중으로 주으면 됨<br><br>다들 성투하세요~!</div>
+            </div>
+            <div class="comment" data-search="165 / 200  오늘 왠지 자꾸 사고싶어서 무리하게 60주나 사버렸군ㅜㅜ 이번달 야식 없다">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">배*******이</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 4</span>
+              </div>
+              
+              <div class="comment-body">165 / 200<br><br>오늘 왠지 자꾸 사고싶어서 무리하게 60주나 사버렸군ㅜㅜ 이번달 야식 없다</div>
+            </div>
+            <div class="comment" data-search="오늘도 틈틈히 조금씩 영차영차!">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">일****다</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 4</span>
+              </div>
+              
+              <div class="comment-body">오늘도 틈틈히 조금씩 영차영차!</div>
+            </div>
+            <div class="comment" data-search="평단 17,185 -&gt; 15,270 다음주 14000대 입성">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">날***다</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 3</span>
+              </div>
+              
+              <div class="comment-body">평단 17,185 -&gt; 15,270 다음주 14000대 입성</div>
+            </div>
+            <div class="comment" data-search="술 마실 돈으로 10주 적립.. 운동이나 가야지;">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">이****다</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 3</span>
+              </div>
+              
+              <div class="comment-body">술 마실 돈으로 10주 적립.. 운동이나 가야지;</div>
+            </div>
+            <div class="comment" data-search="오늘은 줍는날~">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">슈***리</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 3</span>
+              </div>
+              
+              <div class="comment-body">오늘은 줍는날~</div>
+            </div>
+            <div class="comment" data-search="10원 단위로 한마리씩 한마리씩 낚시하는 느낌으로~">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">일****다</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 3</span>
+              </div>
+              
+              <div class="comment-body">10원 단위로 한마리씩 한마리씩 낚시하는 느낌으로~</div>
+            </div>
+            <div class="comment" data-search="기록용. 1300/ 목표 5000">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">돈******오</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 3</span>
+              </div>
+              
+              <div class="comment-body">기록용. 1300/ 목표 5000</div>
+            </div>
+            <div class="comment" data-search="생각보다 방어 굿!">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">맑**낫</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 3</span>
+              </div>
+              
+              <div class="comment-body">생각보다 방어 굿!</div>
+            </div>
+            <div class="comment" data-search="달다 달아.">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">온******0</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 3</span>
+              </div>
+              
+              <div class="comment-body">달다 달아.</div>
+            </div>
+            <div class="comment" data-search="사자마자 폭락이네.. 바닥이라 생각했는데. .">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">넉********6</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 2</span>
+              </div>
+              
+              <div class="comment-body">사자마자 폭락이네..<br>바닥이라 생각했는데. .</div>
+            </div>
+            <div class="comment" data-search="국장 무대응중인데.. 이제 원금 구간이라 움직여야겠네요;; 다들 안전한 연말 보내세요…  올 연말은 외출 조심하셔야할듯합니다">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">배**루</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 2</span>
+              </div>
+              
+              <div class="comment-body">국장 무대응중인데.. 이제 원금 구간이라 움직여야겠네요;;<br>다들 안전한 연말 보내세요… <br>올 연말은 외출 조심하셔야할듯합니다</div>
+            </div>
+            <div class="comment" data-search="뭔 엥간히 내려야지...">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">재*********2</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 2</span>
+              </div>
+              
+              <div class="comment-body">뭔 엥간히 내려야지...</div>
+            </div>
+            <div class="comment" data-search="이번주 고생했다❤️">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">맑**낫</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 2</span>
+              </div>
+              
+              <div class="comment-body">이번주 고생했다❤️</div>
+            </div>
+            <div class="comment" data-search="월급날이지만 치킨패스하고 수집">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">배*****문</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 2</span>
+              </div>
+              
+              <div class="comment-body">월급날이지만 치킨패스하고 수집</div>
+            </div>
+            <div class="comment" data-search="와 마 29퍼구나.">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">행*******3</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 2</span>
+              </div>
+              
+              <div class="comment-body">와 마 29퍼구나.</div>
+            </div>
+            <div class="comment" data-search="성투하세요">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">열********5</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 2</span>
+              </div>
+              
+              <div class="comment-body">성투하세요</div>
+            </div>
+            <div class="comment" data-search="간만에 분할로 줍줒">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">무***이</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 2</span>
+              </div>
+              
+              <div class="comment-body">간만에 분할로 줍줒</div>
+            </div>
+            <div class="comment" data-search="오랜만에😎">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">드**콩</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 2</span>
+              </div>
+              
+              <div class="comment-body">오랜만에😎</div>
+            </div>
+            <div class="comment" data-search="역시 산이높으면 골이깊구나 월요일이 두렵군">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">카*형</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">역시 산이높으면 골이깊구나<br>월요일이 두렵군</div>
+            </div>
+            <div class="comment" data-search="미장도 국장이 된건가 월요일이 두렵다">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">독******6</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">미장도 국장이 된건가 월요일이 두렵다</div>
+            </div>
+            <div class="comment" data-search="개가 자식을 낳고 이렇게 불렀죠,아이쿠 개쇜~~끼네">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">자********9</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">개가 자식을 낳고 이렇게 불렀죠,아이쿠 개쇜~~끼네</div>
+            </div>
+            <div class="comment" data-search="분배금 겨우3번에 200만 받았는데 ㅠ.ㅠ 시드가 없다 덴장">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">행*******3</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">분배금 겨우3번에 200만 받았는데 ㅠ.ㅠ 시드가 없다 덴장</div>
+            </div>
+            <div class="comment" data-search="퇴근전 냠냠">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">온******0</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">퇴근전 냠냠</div>
+            </div>
+            <div class="comment" data-search="가즤아">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">무****당</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">가즤아</div>
+            </div>
+            <div class="comment" data-search="1325/5000. 기록용">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">돈******오</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">1325/5000. 기록용</div>
+            </div>
+            <div class="comment" data-search="120 /200">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">배*******이</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">120 /200</div>
+            </div>
+            <div class="comment" data-search="110 / 200">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">배*******이</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">110 / 200</div>
+            </div>
+            <div class="comment" data-search="삼프로TV에서 SK증권에서 내가 예상한 시나리오를 이제 얘기하네 코스피 4300~4400까지 밀릴수도있다.라고 참고로 미친소리같지만 엔비디아도 14만원 가능성 있음  지금은 엔비디아 일봉 과매도 진입상태중 삼성처럼 34에서 잠깐 반등 나오다 다시 꺾였던 것처럼 단기성 반등 언제와도 이상하지 않는자리">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">날***다</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">삼프로TV에서 SK증권에서 내가 예상한 시나리오를 이제 얘기하네 코스피 4300~4400까지 밀릴수도있다.라고<br>참고로 미친소리같지만 엔비디아도 14만원 가능성 있음 <br>지금은 엔비디아 일봉 과매도 진입상태중<br>삼성처럼 34에서 잠깐 반등 나오다 다시 꺾였던 것처럼 단기성 반등 언제와도 이상하지 않는자리</div>
+            </div>
+            <div class="comment" data-search="추매 하는 날 일단 여기는 12000원 대에서 모아놓고 타배커는 13000원대 파이어 나이 될때까지는 모아야함 닉스 떨어지는거 보니 나눠서..">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">케**학</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">추매 하는 날<br>일단 여기는 12000원 대에서 모아놓고<br>타배커는 13000원대<br>파이어 나이 될때까지는 모아야함<br>닉스 떨어지는거 보니 나눠서..</div>
+            </div>
+            <div class="comment" data-search="오늘 국장 망했네ㅜㅜ">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">도***1</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">오늘 국장 망했네ㅜㅜ</div>
+            </div>
+            <div class="comment" data-search="배당금은 무조건 나오는건지 상황에따라 안나올수도있는지 굼긍해요 !">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">드***볼</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">배당금은 무조건 나오는건지 상황에따라 안나올수도있는지 굼긍해요 !</div>
+            </div>
+            <div class="comment" data-search="나스닥이 과거 평균 하락장이올때면 큰 하락장일때만 고점대비 -20~ -25%  22년-36% 지금 -18% 조금만 더 기다려봅시다 항상 과매도 끝판까지오면 반등해줬습니다  데드캣 바운스일지 상승으로 이어줄지는 모르나 큰 폭으로 하락후 모든 지표가 바닥끝판까지오는것도 드문일이며  바운스는합니다.   그 이후의 방향성이 중요하겠죠. 지금은 투자자들은 연일 하락하는 엔진만 멈춰줬으면 하는 바람일거임 하락도 잠시 멈추는 자리는 무조건 있음 어딘지 모를뿐 국장도 두말할것없이 큰 하락폭이고 무조건 정체되는구간은 있습니다.  22년에도 그냥 원웨이만 -36%를 전부 하락만 가져간게 아닙니다. 중간에 -20%쯤에 반등도 오고 했습니다. 하지만 그게 추가 하락으로 이어진 데드캣 바운스였지만요. 그래도 정비할시간과 생각할 시간은 주고 그때를 생각하고 현금마련해두세요  국장도 하락 멈춥니다 그게 다 죽이고나서일지는 모르겠지만 내생각엔 잠시 쉬어가는 타임이 곧 오지않을까 싶음  보통 하락장은 120선까지는 평균적이며 찐 하락 시작은 이미 -20%받고나서부터 120선부터가 시작입니다 그 밑으로 갔을때 부터가 사람들 죽어나갑니다. 지금은 커보이지만 평균 하락장임. 그런일은 오지 않기를 바라네요  코스피도 -48%지만 120선을 닿지는 않았습니다. 진짜 경제가 위험수준이라면 반등 시작점에서 고점찍은 기준으로 -80%까지 복귀 그거 아니면 -50~60%에서 끝나지 않을까 싶음 어느 시점부터 이미 짜여진 시나오리같은게  인위로 만들어진 이유로 하락하는 느낌을 받는 시점이 있었고 22년을 비교하자면 22년은 이유들이 명확했어요  그래서 시장은 (그냥 내리고싶었다.) 그리고 잠시 쉬어갈 때가 됐다. 믿고싶음">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">날***다</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">나스닥이 과거 평균 하락장이올때면 큰 하락장일때만 고점대비 -20~ -25%  22년-36%<br>지금 -18% 조금만 더 기다려봅시다 항상 과매도 끝판까지오면 반등해줬습니다 <br>데드캣 바운스일지 상승으로 이어줄지는 모르나 큰 폭으로 하락후 모든 지표가 바닥끝판까지오는것도 드문일이며<br> 바운스는합니다.<br><br> 그 이후의 방향성이 중요하겠죠. 지금은 투자자들은 연일 하락하는 엔진만 멈춰줬으면 하는 바람일거임 하락도 잠시 멈추는 자리는 무조건 있음 어딘지 모를뿐<br>국장도 두말할것없이 큰 하락폭이고 무조건 정체되는구간은 있습니다.  22년에도 그냥 원웨이만 -36%를 전부 하락만 가져간게 아닙니다. 중간에 -20%쯤에 반등도 오고 했습니다. 하지만 그게 추가 하락으로 이어진 데드캣 바운스였지만요. 그래도 정비할시간과 생각할 시간은 주고 그때를 생각하고 현금마련해두세요 <br>국장도 하락 멈춥니다 그게 다 죽이고나서일지는 모르겠지만 내생각엔 잠시 쉬어가는 타임이 곧 오지않을까 싶음<br><br>보통 하락장은 120선까지는 평균적이며 찐 하락 시작은 이미 -20%받고나서부터 120선부터가 시작입니다<br>그 밑으로 갔을때 부터가 사람들 죽어나갑니다. 지금은 커보이지만 평균 하락장임. 그런일은 오지 않기를 바라네요 <br>코스피도 -48%지만 120선을 닿지는 않았습니다. 진짜 경제가 위험수준이라면 반등 시작점에서 고점찍은 기준으로 -80%까지 복귀 그거 아니면 -50~60%에서 끝나지 않을까 싶음 어느 시점부터 이미 짜여진 시나오리같은게  인위로 만들어진 이유로 하락하는 느낌을 받는 시점이 있었고 22년을 비교하자면 22년은 이유들이 명확했어요 <br>그래서 시장은 (그냥 내리고싶었다.) 그리고 잠시 쉬어갈 때가 됐다. 믿고싶음</div>
+            </div>
+            <div class="comment" data-search="월요일 떨어질텐데 적금을 깨? 말어? 배당 매수하는거 중독성 있네요..ㅜ.ㅜ">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">케**학</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">월요일 떨어질텐데 적금을 깨? 말어?<br>배당 매수하는거 중독성 있네요..ㅜ.ㅜ</div>
+            </div>
+            <div class="comment" data-search="좀더 떨어지면 사야징 ㅋ">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">방**다</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">좀더 떨어지면 사야징 ㅋ</div>
+            </div>
+            <div class="comment" data-search="주식안살아지나요? 평생하나요?">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">극*이</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">주식안살아지나요?<br>평생하나요?</div>
+            </div>
+            <div class="comment" data-search="하락장 마음의준비">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">뉴*란</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">하락장 마음의준비</div>
+            </div>
+            <div class="comment" data-search="RISE 커버드콜 ETF 매수 이벤트 당첨자 나왔네요 ㅋㄷ 웃을 일 없었는데 그냥 신청하신 분들 가볍게 봐보세요~">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">고*********4</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">RISE 커버드콜 ETF 매수 이벤트 당첨자 나왔네요 ㅋㄷ 웃을 일 없었는데 그냥 신청하신 분들 가볍게 봐보세요~</div>
+            </div>
+            <div class="comment" data-search="좋나요? 비상금은 여기넣으면안되죠..?">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">특*****6</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">좋나요? 비상금은 여기넣으면안되죠..?</div>
+            </div>
+            <div class="comment" data-search="와~~좋은거겠죠 ㅠㅠ">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">사**숲</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">와~~좋은거겠죠 ㅠㅠ</div>
+            </div>
+            <div class="comment" data-search="으이구...ㅋ">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">재*********2</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">으이구...ㅋ</div>
+            </div>
+            <div class="comment" data-search="다음 배당금 590원만 줘. 겨울 한달 관리비하게..">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">케**학</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">다음 배당금 590원만 줘. 겨울 한달 관리비하게..</div>
+            </div>
+            <div class="comment" data-search="배당률40%네요 2년반이면 원금뽑고  평생 꽁돈 ㄷㄷ  다들평단12000에서삿죠?">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">똥****식</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">배당률40%네요 2년반이면 원금뽑고  평생 꽁돈 ㄷㄷ<br><br>다들평단12000에서삿죠?</div>
+            </div>
+            <div class="comment" data-search="배딩 40퍼!">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">승****잘</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">배딩 40퍼!</div>
+            </div>
+            <div class="comment" data-search="삼성 -6프로인데  -2.8프로 갭차이보소 하락을 못따라잡네  그만큼 나중에 상승에서 코스피가 다시 갭 따라잡고 상승은 더딘건 감안해야댐 개별종목 상한15% 밸류업을 만든 취지 성격상">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">날***다</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">삼성 -6프로인데  -2.8프로 갭차이보소 하락을 못따라잡네 <br>그만큼 나중에 상승에서 코스피가 다시 갭 따라잡고 상승은 더딘건 감안해야댐 개별종목 상한15% 밸류업을 만든 취지 성격상</div>
+            </div>
+            <div class="comment" data-search="배당으로 닉스나 사야겠네…">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">배**루</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">배당으로 닉스나 사야겠네…</div>
+            </div>
+            <div class="comment" data-search="내가 사는날마다 싸지네 싸다싸">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">날***다</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">내가 사는날마다 싸지네 싸다싸</div>
+            </div>
+            <div class="comment" data-search="빅쌔일을 관망하는 나">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">이****어</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">빅쌔일을 관망하는 나</div>
+            </div>
+            <div class="comment" data-search="P 추 O 매 W 발 E 동 R">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">무****당</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">P 추 O 매 W 발 E 동 R</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="tag tag-negative">부정</span>
+            <span class="etf-name">RISE 미국테크100데일리고정커버드콜</span>
+            <span class="count">27건</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="card-summary">투자자들 사이에서 불안과 실망이 우세한 부정적 반응 지배</div>
+          <div class="card-detail">
+            <div class="comment" data-search="우리 쌀보리 하는거 아닙니다 우리는 홀짝 하는거 아니죠 좀 버티고 기다립시다 분명히 올겁니다 다들 힘냅시다">
+              <div class="comment-meta">
+                <span class="badge" style="background:#03C75A">네이버</span>
+                <span class="author">마**보</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 1</span> <span class="meta-stat">👁 6</span>
+              </div>
+              <div class="comment-title">우리 쌀보리 하는거 아닙니다</div>
+              <div class="comment-body">우리는 홀짝 하는거 아니죠 좀 버티고 기다립시다 분명히 올겁니다 다들 힘냅시다</div>
+            </div>
+            <div class="comment" data-search="평단 12,000원 1,000주 갖고 있고 5개월 동안 5회 분배금 받았으며 그 금액에 일부 보태서 200주 추가 매수 물탔습니다. 이 상품은 미국 나스닥 추종이라 걱정이 덜한편. 같은 &#39;RISE 코리아 벨류업 위클리 고정 커버드콜&#39;은 수량도 많고 매일 5주씩 자동 매수중인데 코스피 추종이라 끝도 없이 추락중이고 어디까지 내려갈지  몰라서 매일 자동매수로 대응할 수 밖에 없네요.  미국 다우존스, 나스닥 추종 커버드콜들은 기다리면 항상 살려줬으니 오늘처럼 9천원 깨고 내려간 날은 비중 늘리고 평단 낮추기 좋은 상황이라 봅니다.  신규 진입하는 분들은 정말 부럽네요 이 가격 평단이라.">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">대**읔</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 11</span>
+              </div>
+              
+              <div class="comment-body">평단 12,000원 1,000주 갖고 있고 5개월 동안<br>5회 분배금 받았으며 그 금액에 일부 보태서 200주<br>추가 매수 물탔습니다.<br>이 상품은 미국 나스닥 추종이라 걱정이 덜한편.<br>같은 'RISE 코리아 벨류업 위클리 고정 커버드콜'은<br>수량도 많고 매일 5주씩 자동 매수중인데 코스피 추종이라 끝도 없이 추락중이고 어디까지 내려갈지 <br>몰라서 매일 자동매수로 대응할 수 밖에 없네요.<br><br>미국 다우존스, 나스닥 추종 커버드콜들은 기다리면<br>항상 살려줬으니 오늘처럼 9천원 깨고 내려간 날은<br>비중 늘리고 평단 낮추기 좋은 상황이라 봅니다.<br><br>신규 진입하는 분들은 정말 부럽네요 이 가격 평단이라.</div>
+            </div>
+            <div class="comment" data-search="꺅. -21%   여기 사람 죽어욧">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">배***줍</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 10</span>
+              </div>
+              
+              <div class="comment-body">꺅. -21%<br><br><br>여기 사람 죽어욧</div>
+            </div>
+            <div class="comment" data-search="미친거아니냐">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">테**리</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 6</span>
+              </div>
+              
+              <div class="comment-body">미친거아니냐</div>
+            </div>
+            <div class="comment" data-search="이종목 토스 투자자 100%손실중 모두가 물려 있어서 덜 아픕니다 다같이 죽 빵 을 쎄려맞으니 위안이 됩니다 ㅠㅠ">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">H*****A</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 6</span>
+              </div>
+              
+              <div class="comment-body">이종목 토스 투자자 100%손실중<br>모두가 물려 있어서 덜 아픕니다<br>다같이 죽 빵 을 쎄려맞으니 위안이 됩니다<br>ㅠㅠ</div>
+            </div>
+            <div class="comment" data-search="사업자 신용대출 7천만원 완료 매일 천주씩 분할매수 원금회복되면 빠빠이">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">부******9</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 6</span>
+              </div>
+              
+              <div class="comment-body">사업자 신용대출 7천만원 완료<br>매일 천주씩 분할매수<br>원금회복되면 빠빠이</div>
+            </div>
+            <div class="comment" data-search="12500원까지 갔던 놈이 8천원대라니 아오..같이 죽자">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">N*****q</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 5</span>
+              </div>
+              
+              <div class="comment-body">12500원까지 갔던 놈이 8천원대라니 아오..같이 죽자</div>
+            </div>
+            <div class="comment" data-search="진짜 심란하다 나보다 심란한사람있나">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">기*****4</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 4</span>
+              </div>
+              
+              <div class="comment-body">진짜 심란하다<br>나보다 심란한사람있나</div>
+            </div>
+            <div class="comment" data-search="공포에 사야한다는게 이런거였나... 분할매수하는 사람들 빼고는 전멸인데 이거">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">따*******4</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 2</span>
+              </div>
+              
+              <div class="comment-body">공포에 사야한다는게 이런거였나... 분할매수하는 사람들 빼고는 전멸인데 이거</div>
+            </div>
+            <div class="comment" data-search="다들 존버하시나요? 그나마 커버드콜이라서 버틸만 한건지 ㅠㅠ">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">따*******4</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 2</span>
+              </div>
+              
+              <div class="comment-body">다들 존버하시나요? 그나마 커버드콜이라서 버틸만 한건지 ㅠㅠ</div>
+            </div>
+            <div class="comment" data-search="이제 고마 묵고 싶다. 마이 배부르다 아이가~">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">피**타</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 2</span>
+              </div>
+              
+              <div class="comment-body">이제 고마 묵고 싶다.<br>마이 배부르다 아이가~</div>
+            </div>
+            <div class="comment" data-search="걍 죽으셈 제발">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">부*******2</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 2</span>
+              </div>
+              
+              <div class="comment-body">걍 죽으셈 제발</div>
+            </div>
+            <div class="comment" data-search="2025년 10월쯤에 몰빵한 사람이랑 평단이 비슷해졌겠네 그나마 위안이 되네  내가 산게 저점일줄 알았는데...">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">따*******4</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">2025년 10월쯤에 몰빵한 사람이랑 평단이 비슷해졌겠네 그나마 위안이 되네<br> 내가 산게 저점일줄 알았는데...</div>
+            </div>
+            <div class="comment" data-search="젠장 물타기 했더니 더 내리네 ㅎㅏ">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">내*******오</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">젠장 물타기 했더니 더 내리네 ㅎㅏ</div>
+            </div>
+            <div class="comment" data-search="살까. 좀 더 기다릴까">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">분**인</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">살까. 좀 더 기다릴까</div>
+            </div>
+            <div class="comment" data-search="환율이 튀기 오래 걸릴 거 같고 전반적인 상황이 개선되기까지 내년 초까지는 봐야할 거 같아서 -16빔 맞고 잠시 떠납니다 ㅠ 모두들 힘내세요ㅠㅠㅠ">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">보***끼</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">환율이 튀기 오래 걸릴 거 같고 전반적인 상황이 개선되기까지 내년 초까지는 봐야할 거 같아서 -16빔 맞고 잠시 떠납니다 ㅠ 모두들 힘내세요ㅠㅠㅠ</div>
+            </div>
+            <div class="comment" data-search="배당락일인가요">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">신*남</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">배당락일인가요</div>
+            </div>
+            <div class="comment" data-search="손절 후 다시 매일 1주씩 사기로 한 거 잘한듯">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">궁*댕</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">손절 후 다시 매일 1주씩 사기로 한 거 잘한듯</div>
+            </div>
+            <div class="comment" data-search="뭐여 뭔일이여">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">특*********6</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">뭐여 뭔일이여</div>
+            </div>
+            <div class="comment" data-search="아오 이걸 사는게 맞나 좀 현타오네요  밑 빠진 독에 물 붓기같은데">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">심*******다</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">아오 이걸 사는게 맞나 좀 현타오네요<br><br>밑 빠진 독에 물 붓기같은데</div>
+            </div>
+            <div class="comment" data-search="담주에 엄청난 피바람 불겄네...">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">욕****자</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">담주에 엄청난 피바람 불겄네...</div>
+            </div>
+            <div class="comment" data-search="애프터마켓 오르고 환율 오르고. 그렇게 많이는 안떨어질듯.">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">분**인</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">애프터마켓 오르고 환율 오르고. 그렇게 많이는 안떨어질듯.</div>
+            </div>
+            <div class="comment" data-search="월요일에  6프로 빠지는걸로 찍히겠네 두렵다 ㅠㅠ">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">따*******4</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">월요일에  6프로 빠지는걸로 찍히겠네 두렵다 ㅠㅠ</div>
+            </div>
+            <div class="comment" data-search="반전이 생길까 싶어 금욜 미친척하고 물탓는데 월요일 개박살 나긋네 **것">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">내*******오</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">반전이 생길까 싶어 금욜 미친척하고 물탓는데 월요일 개박살 나긋네 **것</div>
+            </div>
+            <div class="comment" data-search="현재  나스닥  연초대비  3퍼 올랐다고 하네요 나스닥이 년평균 12퍼 오르는거라고 하던데 그냥 계속 추매하면 살려줄거같네요 이거 그냥 만원 이상이면 추매 멈추고 만원이하면 계속 매수하면 될거 같은데요? 현재 2900주 정도들고 있습니다 평단 9610">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">저**********이</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">현재  나스닥  연초대비  3퍼 올랐다고 하네요<br>나스닥이 년평균 12퍼 오르는거라고 하던데 그냥 계속 추매하면 살려줄거같네요<br>이거 그냥 만원 이상이면 추매 멈추고 만원이하면 계속 매수하면 될거 같은데요?<br>현재 2900주 정도들고 있습니다 평단 9610</div>
+            </div>
+            <div class="comment" data-search="위기 or 기회?">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">꼰*악</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">위기 or 기회?</div>
+            </div>
+            <div class="comment" data-search="엄...">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">욕****자</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">엄...</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="tag tag-negative">부정</span>
+            <span class="etf-name">RISE 미국AI밸류체인데일리고정커버드콜</span>
+            <span class="count">18건</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="card-summary">투자자들 사이에서 우려와 손절 의견이 우세한 부정적 분위기</div>
+          <div class="card-detail">
+            <div class="comment" data-search="월요일 8천원가냐?ㅋㅋㅋ">
+              <div class="comment-meta">
+                <span class="badge" style="background:#03C75A">네이버</span>
+                <span class="author">R****m</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 1</span> <span class="meta-stat">👁 32</span>
+              </div>
+              <div class="comment-title">월요일</div>
+              <div class="comment-body">8천원가냐?ㅋㅋㅋ</div>
+            </div>
+            <div class="comment" data-search="공포에 매수하라~ 난 오늘도 분할매수한다....">
+              <div class="comment-meta">
+                <span class="badge" style="background:#03C75A">네이버</span>
+                <span class="author">c****r</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 3</span> <span class="meta-stat">👁 11</span>
+              </div>
+              <div class="comment-title">공포에 매수하라~</div>
+              <div class="comment-body">난 오늘도 분할매수한다....</div>
+            </div>
+            <div class="comment" data-search="NAV괴리율-1.73% 심각하게 생각하라! TIGER랑 1%차이가~ㅠ">
+              <div class="comment-meta">
+                <span class="badge" style="background:#03C75A">네이버</span>
+                <span class="author">황***7</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">👁 12</span>
+              </div>
+              <div class="comment-title">NAV괴리율-1.73%</div>
+              <div class="comment-body">심각하게 생각하라! TIGER랑 1%차이가~ㅠ</div>
+            </div>
+            <div class="comment" data-search="똥빛박쥐게이야 그렇게 지지선 지지선 그러드만 22000대다 자 이젠 어떤 희망고문을 할테냐! 너도 인정하고 포가해라">
+              <div class="comment-meta">
+                <span class="badge" style="background:#03C75A">네이버</span>
+                <span class="author">한*****로</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">👁 11</span>
+              </div>
+              <div class="comment-title">똥빛박쥐게이야</div>
+              <div class="comment-body">그렇게 지지선 지지선 그러드만 22000대다 자 이젠 어떤 희망고문을 할테냐! 너도 인정하고 포가해라</div>
+            </div>
+            <div class="comment" data-search="배당 풍차돌리기 기법  * 준비물  나스닥(코스피) 기반 커버드콜, schd 기반 커버드콜, 금융주 관련 커버드콜  -&gt; 본인은 4가지(코리아밸류업, 나스닥(ai집중), 금융고배당, schd) 커버드콜로 진행 중   * 투자 방법  (매월 분배금 + 월급) ÷ 20 거래일 = 일일투자액 설정 후 장 중 하락 분이 큰 순서로 비중 설정하여 줍기  * 장점  1. 매도 타이밍 신경쓰지 않고 걍 모아가면 됨 (성장주 위주로 매수시 매도 타이밍이 중요함)  2. 3세대 커버드콜의 경우 상승분의 일정부분만 참여가 제한되기 때문에 상승장에서 본주보다 미약할 수 있으나 거의 잘 따라감  3. 횡보, 하락 장세에서는 본주보다 퍼포먼스 좋음  * 금일(11/20) 취해야 할 action  나스닥 하락분이 가장 크기 때문에 비중 제일 많이 설정 -&gt; 그 다음으로 코리아 밸류업 커버드콜 -&gt; 그 다음 schd 기반 커버드콜 (금융 고배당 기반 커버드콜은 금일 상승했기 때문에 투자 x  대충 나스닥 커버드콜 5 : 코밸 커버드콜 3 : shcd 커버드콜 2 비중으로 주으면 됨  다들 성투하세요~!">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">배******기</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 2</span>
+              </div>
+              
+              <div class="comment-body">배당 풍차돌리기 기법<br><br>* 준비물<br><br>나스닥(코스피) 기반 커버드콜, schd 기반 커버드콜, 금융주 관련 커버드콜 <br>-&gt; 본인은 4가지(코리아밸류업, 나스닥(ai집중), 금융고배당, schd) 커버드콜로 진행 중<br><br><br>* 투자 방법<br><br>(매월 분배금 + 월급) ÷ 20 거래일 = 일일투자액 설정 후 장 중 하락 분이 큰 순서로 비중 설정하여 줍기<br><br>* 장점<br><br>1. 매도 타이밍 신경쓰지 않고 걍 모아가면 됨 (성장주 위주로 매수시 매도 타이밍이 중요함)<br><br>2. 3세대 커버드콜의 경우 상승분의 일정부분만 참여가 제한되기 때문에 상승장에서 본주보다 미약할 수 있으나 거의 잘 따라감<br><br>3. 횡보, 하락 장세에서는 본주보다 퍼포먼스 좋음<br><br>* 금일(11/20) 취해야 할 action<br><br>나스닥 하락분이 가장 크기 때문에 비중 제일 많이 설정 -&gt; 그 다음으로 코리아 밸류업 커버드콜 -&gt; 그 다음 schd 기반 커버드콜 (금융 고배당 기반 커버드콜은 금일 상승했기 때문에 투자 x<br><br>대충 나스닥 커버드콜 5 : 코밸 커버드콜 3 : shcd 커버드콜 2 비중으로 주으면 됨<br><br>다들 성투하세요~!</div>
+            </div>
+            <div class="comment" data-search="엄마 미안해">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">1*********다</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">엄마 미안해</div>
+            </div>
+            <div class="comment" data-search="싸해서 10700원에 손절 했는데.. 잘한듯ㅠ">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">동*굴</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">싸해서 10700원에 손절 했는데.. 잘한듯ㅠ</div>
+            </div>
+            <div class="comment" data-search="관망중인데 리얼저점 하따매수 갈게요">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">주******라</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">관망중인데 리얼저점 하따매수 갈게요</div>
+            </div>
+            <div class="comment" data-search="결국  9000원대 가네 에휴  담주 8000원대 가겠다">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">우***야</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">결국  9000원대 가네 에휴  담주 8000원대 가겠다</div>
+            </div>
+            <div class="comment" data-search="이거 해외주식 인가요 ?">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">주******라</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">이거 해외주식 인가요 ?</div>
+            </div>
+            <div class="comment" data-search="한강 춥겠지">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">배******자</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">한강 춥겠지</div>
+            </div>
+            <div class="comment" data-search="오늘 초토화네.">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">네*카</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">오늘 초토화네.</div>
+            </div>
+            <div class="comment" data-search="... 만원대 깨지겠네">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">우***야</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">... 만원대 깨지겠네</div>
+            </div>
+            <div class="comment" data-search="정말 궁금해서 그런데 -38% 현재 이거 오르긴 오릅니까? 손실금 880만원 900 근처인데 머리 터지네  배당 저번달까지 몇개월 받아서 150만원 재투자 했는데... 희망 회로 가지고 재투자 해도 됌?">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">네*파</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">정말 궁금해서 그런데 -38% 현재 이거 오르긴 오릅니까?<br>손실금 880만원 900 근처인데 머리 터지네<br><br>배당 저번달까지 몇개월 받아서 150만원 재투자 했는데...<br>희망 회로 가지고 재투자 해도 됌?</div>
+            </div>
+            <div class="comment" data-search="흠 -30%....8500주.....이게 맞나....">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">앞***씨</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">흠 -30%....8500주.....이게 맞나....</div>
+            </div>
+            <div class="comment" data-search="마 23%    아직 지하실 남았나">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">배******자</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">마 23%    아직 지하실 남았나</div>
+            </div>
+            <div class="comment" data-search="돌았네……….">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">매******9</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">돌았네……….</div>
+            </div>
+            <div class="comment" data-search="와 만원대도 깨지겠는데 평단 14400원대인데 ㄹㅇ 미치겠네">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">씨**8</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">와 만원대도 깨지겠는데 평단 14400원대인데 ㄹㅇ 미치겠네</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="tag tag-negative">부정</span>
+            <span class="etf-name">RISE 현대차고정피지컬AI</span>
+            <span class="count">11건</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="card-summary">주가 하락에 대한 우려와 회의적 반응이 주를 이루는 부정적 분위기</div>
+          <div class="card-detail">
+            <div class="comment" data-search="-57퍼 ㅎㅎㅎㅎㅎㅎㅎㅎㄹㄹㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ 진짜 이거 사기아닌가">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">신*********4</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 7</span>
+              </div>
+              
+              <div class="comment-body">-57퍼 ㅎㅎㅎㅎㅎㅎㅎㅎㄹㄹㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ 진짜 이거 사기아닌가</div>
+            </div>
+            <div class="comment" data-search="스레기 진짜">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">o**o</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 2</span>
+              </div>
+              
+              <div class="comment-body">스레기 진짜</div>
+            </div>
+            <div class="comment" data-search="하 시이바  이거 왜이래요">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">스****부</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">하 시이바  이거 왜이래요</div>
+            </div>
+            <div class="comment" data-search="이거 인버스 출시하면 거래대금 10조 터질듯">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">코*****대</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">이거 인버스 출시하면 거래대금 10조 터질듯</div>
+            </div>
+            <div class="comment" data-search="-58퍼  후하 앞으로 KGM만탄다">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">부*******9</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">-58퍼<br><br>후하 앞으로 KGM만탄다</div>
+            </div>
+            <div class="comment" data-search="현대차가 쓰레기주네">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">시**리</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">현대차가 쓰레기주네</div>
+            </div>
+            <div class="comment" data-search="언제 올라올래 매일 내려가기만하면 언제올라올껀데">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">햇********짝</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">언제 올라올래 매일 내려가기만하면 언제올라올껀데</div>
+            </div>
+            <div class="comment" data-search="사기주식">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">양*무</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">사기주식</div>
+            </div>
+            <div class="comment" data-search="ㄱ노답주다 증말로">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">정*******2</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">ㄱ노답주다 증말로</div>
+            </div>
+            <div class="comment" data-search="적정 주가  4000-5000">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">금*****엥</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">적정 주가  4000-5000</div>
+            </div>
+            <div class="comment" data-search="반드시 수익내고 간다!!">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">기*****이</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">반드시 수익내고 간다!!</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="tag tag-neutral">중립</span>
+            <span class="etf-name">RISE 코스닥커버드콜액티브</span>
+            <span class="count">10건</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="card-summary">투자자들은 하락 우려와 저점 탐색 사이에서 혼란스러운 반응을 보임</div>
+          <div class="card-detail">
+            <div class="comment" data-search="코스닥 레버리인줄 알았슴 잘못들어왔나 나갔다 다시들어옴..ㅠㅠ">
+              <div class="comment-meta">
+                <span class="badge" style="background:#03C75A">네이버</span>
+                <span class="author">따******맨</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">👁 3</span>
+              </div>
+              <div class="comment-title">코스닥 레버리인줄 알았슴</div>
+              <div class="comment-body">잘못들어왔나 나갔다 다시들어옴..ㅠㅠ</div>
+            </div>
+            <div class="comment" data-search="커버드콜에 이런 거 하는 거 의미 없긴 한데  배당주는 수익을 보는 것이 아니고 tr(토탈리턴)을 봐야 함  그래도 흐름이나 지금이 저점인가?를 확인하기 위해 글을 한번 적어 봄 참고만 해라고  항상 뻘 글 만 적다가 진지한 글 적고 좀 있다 글삭튀 하는데 이건 걍 남겨 둘게요 진지한 건 나랑 안 맞아...  지금 보면 abc 파동에서 저점이 나왔음 c에서 보면 갭 하락 후 쓱 말아 올렸잖아 시가에서 역망치형이 나오면 추세전환 및 저점신호로 볼 수 있음 그래서 확신은 아니지만 저 때 매수를 할 수 있는거지  c는 예단 할 수 없기 때문에 시가(6455원)가 깨진다면 손절을 준비하고 가는 거지만 커버드콜이기 때문에 그딴 건 모른다 걍 매수 ㄱㄱ   주봉을 보면 장대음봉 다음에 양봉 장악형이 나오면 추세전환으로 볼 수 있음 뭐 그 몸통 길이에 따라 이름이 있는데 그걸 떠나서 걍 길이에 따라 힘이 쌔다고 생각하면 됨  종간 이상을 잡아 먹었기에 추세전환이 제법 쌔다 이번주에 음봉 나와서 알빠 아님 저번주 저점(6620원)만 안깨면 됨 그 추세는 유지가 되는 거임  그리고 이번주 주봉에 긴 꼬리 달고 올라오잖아 그럼 이제 진짜 상승 추세 전환으로 바뀔 수 있다는 희망이 있다는 거지 꼬리 달고 양봉으로 바뀌는 것이 좋음   코스닥 차트도 이 관점과 비슷함  걍 참고만 하셈 그래서 지금 코스피 보단 코스닥이 힘이 좋고 나라면 코스닥 투자함  그런데 커버드콜에 이런 거 생각하는 건 의미가 없긴 해 걍 흐름 추세만 본다 생각하고 참고하셈  커버드콜은 tr을 봐야하고 내릴 거 같은지 오를 거 같은지만 보면 되는 거라서 비중 알아서 조절하고 주가가 내리면 배당도 줄거든 그러면 배당금을 다시 재투자 해서 tr을 알아서 조절하면 되는 문제라 결국 또 오르면 배당은 늘어나고   커버드콜은 본주를 이길 수 없지만 유일하게 이길 수 있는 방법이 콜옵션 차이로 이길 수 있음  콜옵션이 어떤 방식으로 매매를 하는지를 봐야 함 그게 가장 중요함">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">내*******함</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 2</span>
+              </div>
+              
+              <div class="comment-body">커버드콜에 이런 거 하는 거 의미 없긴 한데 <br>배당주는 수익을 보는 것이 아니고 tr(토탈리턴)을 봐야 함 <br>그래도 흐름이나 지금이 저점인가?를 확인하기 위해 글을 한번 적어 봄<br>참고만 해라고<br><br>항상 뻘 글 만 적다가 진지한 글 적고 좀 있다 글삭튀 하는데 이건 걍 남겨 둘게요<br>진지한 건 나랑 안 맞아...<br><br>지금 보면 abc 파동에서 저점이 나왔음<br>c에서 보면 갭 하락 후 쓱 말아 올렸잖아 시가에서 역망치형이 나오면 추세전환 및 저점신호로 볼 수 있음<br>그래서 확신은 아니지만 저 때 매수를 할 수 있는거지 <br>c는 예단 할 수 없기 때문에 시가(6455원)가 깨진다면 손절을 준비하고 가는 거지만 커버드콜이기 때문에 그딴 건 모른다 걍 매수 ㄱㄱ<br><br> 주봉을 보면 장대음봉 다음에 양봉 장악형이 나오면 추세전환으로 볼 수 있음<br>뭐 그 몸통 길이에 따라 이름이 있는데 그걸 떠나서 걍 길이에 따라 힘이 쌔다고 생각하면 됨<br><br>종간 이상을 잡아 먹었기에 추세전환이 제법 쌔다 이번주에 음봉 나와서 알빠 아님 저번주 저점(6620원)만 안깨면 됨 그 추세는 유지가 되는 거임<br><br>그리고 이번주 주봉에 긴 꼬리 달고 올라오잖아 그럼 이제 진짜 상승 추세 전환으로 바뀔 수 있다는 희망이 있다는 거지<br>꼬리 달고 양봉으로 바뀌는 것이 좋음 <br><br>코스닥 차트도 이 관점과 비슷함 <br>걍 참고만 하셈 그래서 지금 코스피 보단 코스닥이 힘이 좋고 나라면 코스닥 투자함<br><br>그런데 커버드콜에 이런 거 생각하는 건 의미가 없긴 해 걍 흐름 추세만 본다 생각하고 참고하셈<br><br>커버드콜은 tr을 봐야하고 내릴 거 같은지 오를 거 같은지만 보면 되는 거라서 비중 알아서 조절하고 주가가 내리면 배당도 줄거든 그러면 배당금을 다시 재투자 해서 tr을 알아서 조절하면 되는 문제라 결국 또 오르면 배당은 늘어나고 <br><br>커버드콜은 본주를 이길 수 없지만 유일하게 이길 수 있는 방법이 콜옵션 차이로 이길 수 있음 <br>콜옵션이 어떤 방식으로 매매를 하는지를 봐야 함 그게 가장 중요함</div>
+            </div>
+            <div class="comment" data-search="6500 보러가나?">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">당*******7</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">6500 보러가나?</div>
+            </div>
+            <div class="comment" data-search="내가 레버리지를 들어왔나..?">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">허**타</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">내가 레버리지를 들어왔나..?</div>
+            </div>
+            <div class="comment" data-search="주식대비 현금 20% 소모 하락장이 언제까지?">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">K********n</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">주식대비 현금 20% 소모 하락장이 언제까지?</div>
+            </div>
+            <div class="comment" data-search="소부장쪽 박살나서 조심해야 함">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">주**********요</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">소부장쪽 박살나서 조심해야 함</div>
+            </div>
+            <div class="comment" data-search="그래도 저점 계속 올라가는듯 6455는 안올라나">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">든****밥</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">그래도 저점 계속 올라가는듯 6455는 안올라나</div>
+            </div>
+            <div class="comment" data-search="지수보다 훨씬 더 빠지네요 레버리지 같은 느낌">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">코****빵</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">지수보다 훨씬 더 빠지네요 레버리지 같은 느낌</div>
+            </div>
+            <div class="comment" data-search="괴리율 조심">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">K********n</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">괴리율 조심</div>
+            </div>
+            <div class="comment" data-search="이거 지수보다 더 떨어지는 이유 아시는분">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">젊******4</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">이거 지수보다 더 떨어지는 이유 아시는분</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="tag tag-neutral">중립</span>
+            <span class="etf-name">RISE 200위클리커버드콜</span>
+            <span class="count">5건</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="card-summary">혼란스러운 시장 반응, 일부 기대와 회의 공존</div>
+          <div class="card-detail">
+            <div class="comment" data-search="13670 언젠가는 오르겠지?">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">주*쭈</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 9</span>
+              </div>
+              
+              <div class="comment-body">13670 언젠가는 오르겠지?</div>
+            </div>
+            <div class="comment" data-search="배당으로 커버 안된다 오 마이 갓~~">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">S*****7</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 3</span>
+              </div>
+              
+              <div class="comment-body">배당으로 커버 안된다<br>오 마이 갓~~</div>
+            </div>
+            <div class="comment" data-search="싸게샀다고 축하한다는 댓글을 본거 같은데">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">오*상</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 3</span>
+              </div>
+              
+              <div class="comment-body">싸게샀다고 축하한다는 댓글을 본거 같은데</div>
+            </div>
+            <div class="comment" data-search="되면 사야겠다">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">비**********놈</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 3</span>
+              </div>
+              
+              <div class="comment-body">되면 사야겠다</div>
+            </div>
+            <div class="comment" data-search="ㄱ같은거.. 나스닥 헛기침에 코스피만 나락이네">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">B********r</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 2</span>
+              </div>
+              
+              <div class="comment-body">ㄱ같은거.. 나스닥 헛기침에 코스피만 나락이네</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="tag tag-negative">부정</span>
+            <span class="etf-name">RISE 미국나스닥100</span>
+            <span class="count">3건</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="card-summary">투자자들 사이에서 우려와 불안감이 확산되고 있음</div>
+          <div class="card-detail">
+            <div class="comment" data-search="퇴직금 없어지겠네">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">이**프</span>
+                <span class="date">2026.11.21</span> <span class="meta-stat">❤️ 1</span>
+              </div>
+              
+              <div class="comment-body">퇴직금 없어지겠네</div>
+            </div>
+            <div class="comment" data-search="진짜 퇴직금 없어지겠네 원금밑으로가겄다">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">이**프</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">진짜 퇴직금 없어지겠네 원금밑으로가겄다</div>
+            </div>
+            <div class="comment" data-search="엥? 무슨 일인가요 이게?!">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">평****자</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">엥? 무슨 일인가요 이게?!</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="tag tag-negative">부정</span>
+            <span class="etf-name">RISE 삼성전자SK하이닉스채권혼합50</span>
+            <span class="count">2건</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="card-summary">투자자들 사이에서 손실 우려와 후회의 목소리가 제기됨</div>
+          <div class="card-detail">
+            <div class="comment" data-search="10월에 14000원 왔을때 이건 그냥 뺄걸 ~~">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">뇌****참</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">10월에 14000원 왔을때 이건 그냥 뺄걸 ~~</div>
+            </div>
+            <div class="comment" data-search="퇴직금 살살녹네ㅠ">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">주***해</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">퇴직금 살살녹네ㅠ</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="tag tag-positive">긍정</span>
+            <span class="etf-name">RISE 미국S&P500</span>
+            <span class="count">1건</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="card-summary">투자 이유와 배당 성장에 대한 기대감이 제기됨</div>
+          <div class="card-detail">
+            <div class="comment" data-search="요기투자하신 이유가 궁금합니다 궁금합니다  슈드도 배당성장?이야기하는데  꾸준하게 매입자들이 들어왔을때 성장아닌가요? 궁금합니다 진짜">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">스***족</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">요기투자하신 이유가 궁금합니다<br>궁금합니다 <br>슈드도 배당성장?이야기하는데 <br>꾸준하게 매입자들이 들어왔을때 성장아닌가요?<br>궁금합니다 진짜</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="tag tag-positive">긍정</span>
+            <span class="etf-name">RISE 미국S&P배당킹</span>
+            <span class="count">1건</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="card-summary">저가 매수로 긍정적 기대감 표출</div>
+          <div class="card-detail">
+            <div class="comment" data-search="9천원대부터 주워 ㅋㅋㅋ">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">달**********8</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">9천원대부터 주워 ㅋㅋㅋ</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="tag tag-positive">긍정</span>
+            <span class="etf-name">RISE 미국AI테크액티브</span>
+            <span class="count">1건</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="card-summary">앤트로픽 포함에 긍정적 반응 보임</div>
+          <div class="card-detail">
+            <div class="comment" data-search="앤트로픽이 벌써 있네">
+              <div class="comment-meta">
+                <span class="badge" style="background:#0064FF">토스</span>
+                <span class="author">튼*******8</span>
+                <span class="date">2026.11.21</span>
+              </div>
+              
+              <div class="comment-body">앤트로픽이 벌써 있네</div>
+            </div>
+          </div>
+        </div>
+  </div>
+  <div class="no-results" id="no-results" style="display:none">검색 결과가 없습니다.</div>
+
+</div>
+<script>
+(function() {
+  const input = document.getElementById('search-input');
+  const cards = Array.from(document.querySelectorAll('.card'));
+  const totalLine = document.getElementById('total-line');
+  const noResults = document.getElementById('no-results');
+  const originalTotal = totalLine.textContent;
+
+  document.querySelectorAll('.comment-title, .comment-body, .etf-name').forEach(el => {
+    el.dataset.orig = el.innerHTML;
+  });
+
+  function escapeReg(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+  function highlight(el, term) {
+    if (!el) return;
+    const orig = el.dataset.orig || '';
+    if (!term) { el.innerHTML = orig; return; }
+    const ph = '@@RISE_BR_SENTINEL@@';
+    const safe = orig.replace(/<br\s*\/?>/gi, ph);
+    const re = new RegExp(escapeReg(term), 'gi');
+    el.innerHTML = safe.replace(re, m => '<mark>' + m + '</mark>').replace(new RegExp(ph, 'g'), '<br>');
+  }
+
+  function runSearch() {
+    const term = input.value.trim();
+    if (!term) {
+      cards.forEach(card => {
+        card.style.display = '';
+        card.classList.remove('open');
+        highlight(card.querySelector('.etf-name'), '');
+        card.querySelectorAll('.comment').forEach(c => {
+          c.style.display = '';
+          highlight(c.querySelector('.comment-title'), '');
+          highlight(c.querySelector('.comment-body'), '');
+        });
+      });
+      totalLine.textContent = originalTotal;
+      noResults.style.display = 'none';
+      return;
+    }
+    const termLower = term.toLowerCase();
+    let matchedCards = 0, matchedComments = 0;
+    cards.forEach(card => {
+      const nameEl = card.querySelector('.etf-name');
+      const nameMatched = ((nameEl && nameEl.dataset.orig) || '').toLowerCase().includes(termLower);
+      let cardMatched = nameMatched, cnt = 0;
+      highlight(nameEl, nameMatched ? term : '');
+      card.querySelectorAll('.comment').forEach(c => {
+        const data = (c.dataset.search || '').toLowerCase();
+        const commentMatched = data.includes(termLower);
+        if (commentMatched || nameMatched) {
+          c.style.display = '';
+          cnt++;
+          if (commentMatched) cardMatched = true;
+          highlight(c.querySelector('.comment-title'), commentMatched ? term : '');
+          highlight(c.querySelector('.comment-body'), commentMatched ? term : '');
+        } else {
+          c.style.display = 'none';
+        }
+      });
+      if (cardMatched) {
+        card.style.display = '';
+        card.classList.add('open');
+        matchedCards++;
+        matchedComments += cnt;
+      } else {
+        card.style.display = 'none';
+        card.classList.remove('open');
+      }
+    });
+    totalLine.textContent = '🔍 "' + term + '" 검색결과: ' + matchedCards + '종목 ' + matchedComments + '건';
+    noResults.style.display = matchedCards === 0 ? 'block' : 'none';
+  }
+
+  let t;
+  input.addEventListener('input', () => {
+    clearTimeout(t);
+    t = setTimeout(runSearch, 120);
+  });
+  input.addEventListener('search', runSearch);
+})();
+</script>
+</body>
+</html>
